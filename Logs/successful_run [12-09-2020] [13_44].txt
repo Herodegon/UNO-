@@ -1,0 +1,472 @@
+UNO++ by Team Ayteen
+Created By: Ronald Jock, Denaujay LittleJohn, and Chris Keaton
+
+UNO is a 2001 trademark card game by Mattel Games. Any simularities or likeness to the game are done so under fair-use.
+
+------------------------------------------------------------------------------------------------------------------
+
+Would you like to play the tutorial? Enter 'y' or 'n'.
+n
+
+How many players are there? Enter a number between '2' and '4'.
+2
+
+Please enter Player 1's name.
+r
+
+Please enter Player 2's name.
+j
+
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |0 R|   |9 G|   |S Y|   |7 B|   |5 G|   |4 B|   | W |   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6       7       8     
+=== Top Card ===
+┌   ┐
+|8 G|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 8
+
+What card would you like to play? Enter a number between '1' and '8'.
+If you would like to go back and choose another option, enter '0'.
+
+What color would you like the discard pile to be? Enter 'B', 'G', 'R', or 'Y'.
+G
+
+=== End of Turn ===
+┌   ┐
+|8 G|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|8 Y|   |2 B|   |D B|   |8 R|   |4 Y|   |4 R|   |3 R|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6       7     
+=== Top Card ===
+┌   ┐
+|8 G|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+pla  y 1
+
+What card would you like to play? Enter a number between '1' and '7'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|8 Y|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |0 R|   |9 G|   |S Y|   |7 B|   |5 G|   |4 B|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6       7     
+=== Top Card ===
+┌   ┐
+|8 Y|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 4
+
+What card would you like to play? Enter a number between '1' and '7'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|S Y|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |0 R|   |9 G|   |7 B|   |5 G|   |4 B|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6     
+=== Top Card ===
+┌   ┐
+|S Y|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play      draw
+
+Are you sure you want to draw? Enter 'y' or 'n'.
+y
+
+Card Drawn
+┌   ┐
+| W |
+└   ┘
+
+=== End of Turn ===
+┌   ┐
+|S Y|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|2 B|   |D B|   |8 R|   |4 Y|   |4 R|   |3 R|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6     
+=== Top Card ===
+┌   ┐
+|S Y|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 4
+
+What card would you like to play? Enter a number between '1' and '6'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|4 Y|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |0 R|   |9 G|   |7 B|   |5 G|   |4 B|   | W |   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6       7     
+=== Top Card ===
+┌   ┐
+|4 Y|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 7
+
+What card would you like to play? Enter a number between '1' and '7'.
+If you would like to go back and choose another option, enter '0'.
+
+What color would you like the discard pile to be? Enter 'B', 'G', 'R', or 'Y'.
+G
+
+=== End of Turn ===
+┌   ┐
+|4 G|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|2 B|   |D B|   |8 R|   |4 R|   |3 R|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5     
+=== Top Card ===
+┌   ┐
+|4 G|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 4
+
+What card would you like to play? Enter a number between '1' and '5'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|4 R|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |0 R|   |9 G|   |7 B|   |5 G|   |4 B|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6     
+=== Top Card ===
+┌   ┐
+|4 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 2
+
+What card would you like to play? Enter a number between '1' and '6'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|0 R|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|2 B|   |D B|   |8 R|   |3 R|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4     
+=== Top Card ===
+┌   ┐
+|0 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 3
+
+What card would you like to play? Enter a number between '1' and '4'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|8 R|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |9 G|   |7 B|   |5 G|   |4 B|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5     
+=== Top Card ===
+┌   ┐
+|8 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play      draw
+
+Are you sure you want to draw? Enter 'y' or 'n'.
+y
+
+Card Drawn
+┌   ┐
+|7 G|
+└   ┘
+
+=== End of Turn ===
+┌   ┐
+|8 R|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   
+|2 B|   |D B|   |3 R|   
+└   ┘ , └   ┘ , └   ┘
+  1       2       3     
+=== Top Card ===
+┌   ┐
+|8 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 3
+
+What card would you like to play? Enter a number between '1' and '3'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|3 R|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |9 G|   |7 B|   |5 G|   |4 B|   |7 G|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6     
+=== Top Card ===
+┌   ┐
+|3 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play      draw y
+
+Are you sure you want to draw? Enter 'y' or 'n'.
+
+Card Drawn
+┌   ┐
+| W |
+└   ┘
+
+=== End of Turn ===
+┌   ┐
+|3 R|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   
+|2 B|   |D B|   
+└   ┘ , └   ┘
+  1       2     
+=== Top Card ===
+┌   ┐
+|3 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play      draw y
+
+Are you sure you want to draw? Enter 'y' or 'n'.
+
+Card Drawn
+┌   ┐
+|W 4|
+└   ┘
+
+=== End of Turn ===
+┌   ┐
+|3 R|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |9 G|   |7 B|   |5 G|   |4 B|   |7 G|   | W |   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6       7     
+=== Top Card ===
+┌   ┐
+|3 R|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 7
+
+What card would you like to play? Enter a number between '1' and '7'.
+If you would like to go back and choose another option, enter '0'.
+
+What color would you like the discard pile to be? Enter 'B', 'G', 'R', or 'Y'.
+G
+
+=== End of Turn ===
+┌   ┐
+|3 G|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   
+|2 B|   |D B|   |W 4|   
+└   ┘ , └   ┘ , └   ┘
+  1       2       3     
+=== Top Card ===
+┌   ┐
+|3 G|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 3
+
+What card would you like to play? Enter a number between '1' and '3'.
+If you would like to go back and choose another option, enter '0'.
+
+What color would you like the discard pile to be? Enter 'B', 'G', 'R', or 'Y'.
+B
+
+=== End of Turn ===
+┌   ┐
+|3 B|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   ┌   ┐   
+|2 B|   |D B|   
+└   ┘ , └   ┘
+  1       2     
+=== Top Card ===
+┌   ┐
+|3 B|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 2
+
+What card would you like to play? Enter a number between '1' and '2'.
+If you would like to go back and choose another option, enter '0'.
+
+j has called UNO!
+
+=== End of Turn ===
+┌   ┐
+|D B|   
+└   ┘
+Next up is r's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== r's Turn ===
+┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   ┌   ┐   
+|D G|   |9 G|   |7 B|   |5 G|   |4 B|   |7 G|   |4 B|   |3 Y|   |7 G|   |6 G|   |6 B|   |D R|   
+└   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘ , └   ┘
+  1       2       3       4       5       6       7       8       9       10       11       12     
+=== Top Card ===
+┌   ┐
+|D B|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+pla  y 11
+
+What card would you like to play? Enter a number between '1' and '12'.
+If you would like to go back and choose another option, enter '0'.
+
+=== End of Turn ===
+┌   ┐
+|6 B|   
+└   ┘
+Next up is j's turn.
+Press 'Enter' to continue...
+
+Player Turn Runs
+=== j's Turn ===
+┌   ┐   
+|2 B|   
+└   ┘
+  1     
+=== Top Card ===
+┌   ┐
+|6 B|   
+└   ┘
+Would you like to 'play' a card, or 'draw'?
+play 1
+
+What card would you like to play? Enter a number between '1' and '1'.
+If you would like to go back and choose another option, enter '0'.
+
+j won the round!
+
+Do you want to play another round? 'y' or 'n'? y n
+=== Curret Scores ===
+r: 0
+j: 92
+
+j wins with a score of 92!
+
+Thanks for playing!
+--- END OF GAME ---
+
+

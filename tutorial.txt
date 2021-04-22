@@ -1,0 +1,110 @@
+=== What Is UNO ===
+
+UNO is a card game by Mattel Games. The goal is for the players to get rid of their hand as quickly as
+possible while keeping the other players from doing the same using a variety of different card effects.
+Once a player is down to their last card, they call "UNO!" to let everyone know that they only need to
+play one more card. After their last card is played, they are declared the winner! They can then choose
+to go another round, or quit. If they continue, the rest of the game uses the score system: each card is
+given a score, and every card in each player's hand is tallied for the winner of the round. When either
+3 rounds have passed, or the players have decided to quit (whichever comes first), the winner is declared
+based on the score.
+
+Press 'Enter' to continue...
+=== How To Play ===
+
+1) At the start of every new round the deck is shuffled, each player draws 7 cards, and a card is drawn 
+   for the top of the discard pile.
+
+2) Every turn a player plays a card matching the number, type, or color of the top card on the discard
+     pile. 
+   
+3) If they do not have a card that matches the number, type, or color of the top card, the player must draw 
+     a card from the deck.
+   
+4) If the drawn card can be played, the player must play their new card.
+
+5) Once a player is left with only one card, they call "UNO!," and must play their last card to win.
+
+6) After a player has played their last card, they win the round.
+
+7) If the game is multi-round, the player hands are tallied and added to the winner's score total.
+
+8) Once the players decide to end the multi-round game, or after the players play their fifth round
+   (whichever comes first), player scores are evaluated and the player with the highest score wins.
+   
+Press 'Enter' to continue...
+=== Cards ===
+Cards in the game are styled like this:
+┌   ┐
+|1 R|
+└   ┘
+With the left of the card representing the type/number, while the right side represents the color
+('R' = Red, 'B' = Blue, etc.).
+
+Press 'Enter' to continue...
+=== Special Cards ===
+Special cards are cards that don't use a number, and instead have special rules to them that impact
+you, the other players, or both. There are six different special cards:
+o Skip Cards
+o Reverse Cards 
+o 'Draw 2' Cards
+o Wild Cards 
+o Wild 'Draw 4' Cards 
+o Blank Cards
+
+Press 'Enter' to continue...
+=== Skip Cards ===
+These cards skip the next player's turn.
+┌   ┐
+|S R|
+└   ┘
+
+Press 'Enter' to continue...
+=== Reverse Cards ===
+These cards reverse the player order (If there are four players, then the order would be Player 1, then
+Player 4, then Player 3, and so on).
+┌   ┐
+|R R|
+└   ┘
+*Note: The 'R' on the left is "Reverse," and the 'R' on the right is the color Red.
+
+Press 'Enter' to continue...
+=== 'Draw 2' Cards ===
+These cards, as the name suggests, has the next player draw 2 cards from the deck.
+┌   ┐
+|D R|
+└   ┘
+
+Press 'Enter' to continue...
+=== Wild Cards ===
+These cards allow the player to choose the color of the discard pile.
+┌   ┐
+| W |
+└   ┘
+
+Press 'Enter' to continue...
+=== Wild 'Draw 4' Cards ===
+These cards have multiple effects:
+1) The player chooses the color of the discard pile.
+2) The next player is forced to draw 4 cards from the deck.
+3) The next player's turn is skipped.
+┌   ┐
+|W 4|
+└   ┘
+
+Press 'Enter' to continue...
+=== Blank Cards ===
+These cards allow the player to create their own number card, choosing to the number or color of the 
+top card on the discard pile.
+┌   ┐
+| B |
+└   ┘
+
+Press 'Enter' to continue...
+=== Optional Rules: Player Scoring ===
+When playing multiple rounds, the players' cards are scored by the following:
+o Number Cards = Their Value in Points
+o Skip, Reverse, and 'Draw 2' Cards = 20 Points
+o Wild, Wild 'Draw 4', and Blank Cards = 50 Points
+
+Press 'Enter' to continue...

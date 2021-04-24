@@ -2,20 +2,103 @@
 
 Game::Game() {
     
+    //Tutorial and Get Number/Names of Players
+    Intro();
+    
+    //Shuffle Deck
+    deck.Shuffle();
 }
 
-// Runs the player through an interactive tutorial for playing UNO
+//!TODO: REWRITE FUNCTION
+void Game::Intro() {
+    
+    //Intro
+    std::cout << "UNO++ v2.0\n"
+              << std::endl;
+
+    //Ask If They Would Like A Tutorial
+    do {
+        std::cout << "Would you like to play the tutorial? Enter \'y\' or \'n\'.\n";
+        std::cin.get();
+        
+        if((std::cin.get() != 'y') && (std::cin.get() != 'n'))
+        {
+            std::cout << "Please enter \'y\' or \'n\'.\n"
+                      << std::endl;
+        }
+    } while((std::cin.get() != 'y') && (std::cin.get() != 'n'));
+
+    //Run the tutorial if they respond with 'y'
+    if(std::cin.get() == 'y') {
+        Tutorial();
+    }
+    
+    std::cin.clear();
+
+    //# of players
+    do {
+        std::cout << "How many players are there? "
+                  << "Enter a number between \'2\' and \'4\'.\n";
+        
+        std::cin >> numPlayers;
+        //Player Number Check (Must be number between 2 and 4)
+        if(((numPlayers < 2) || (numPlayers > 4)) || (std::cin.fail())) { 
+            std::cout << std::endl << "Please enter a number between \'2\' and \'4\'.\n";
+
+            if(std::cin.fail()) { //If input was wrong input type i.e., word, clear and ignore input
+                std::cin.clear();
+                std::cin.ignore();
+            }
+        }
+    } while((numPlayers < 2) || (numPlayers > 4));
+    std::cout << std::endl;
+
+    //Player names
+    playerNames.resize(numPlayers);
+    for(size_t i = 0; i < numPlayers; i++) {
+        do {
+            std::cout << "Please enter Player " << i + 1 << "\'s name.\n";
+            std::cin >> playerNames.at(i);
+            std::cout << std::endl;
+            
+            //Character Length Check (Name must be less than 15 chars)
+            if(playerNames.at(i).size() > 15) {
+                std::cout << "Please use a shorter name (less than 15 characters).\n";
+            }
+        } while(playerNames.at(i).size() > 15);
+    }
+    std::cout << std::endl;
+
+    /*NOTE: Player order is dictated by the order in which the names
+             where typed.
+
+       Ex)   # of Players = 2
+             playerNames.at(0) = John; playerNames.at(1) = George
+
+             Therefore:
+             John goes first, George goes second
+    */
+
+    /*TEST; Names REMOVE
+    for(int i = 0; i < numPlayers; i++) {
+        cout << "Player " << i + 1 << ": " << playerNames.at(i) << endl;
+    }
+    return 0;
+    */
+}
+
+//Runs the player through an interactive tutorial for playing UNO
 void Game::Tutorial() const {
     
-    std::string str; // Output string
+    std::string str; //Output string
     std::ostringstream inp;
-    int endSec; // Flag to see if the line contains "Press 'Enter' to continue..."
+    int endSec; //Flag to see if the line contains "Press 'Enter' to continue..."
 
-    std::ifstream tutorial; // File variable for "tutorial.txt"
+    std::ifstream tutorial; //File variable for "tutorial.txt"
 
     tutorial.open("tutorial.txt");
     if(tutorial.is_open()) {
-        while(getline(tutorial, str)) { // Output lines from "tutorial.txt" until it hits a line with "Press 'Enter' to continue..."
+        while(getline(tutorial, str)) { //Output lines from "tutorial.txt" until it hits a line with "Press 'Enter' to continue..."
             endSec = str.find("Press \'Enter\' to continue...");
 
             inp << str << std::endl;
@@ -33,15 +116,8 @@ void Game::Tutorial() const {
 }
 
 //!TODO: REWRITE FUNCTION
-// Runs a single round of UNO, and tallies a score for the winner based on the other player's hands.
-void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
-             vector<int>& player2Hand, vector<char>& player2Colors ,
-             vector<int>& player3Hand, vector<char>& player3Colors ,
-             vector<int>& player4Hand, vector<char>& player4Colors ,
-             vector<int>& deckValues , vector<char>& deckColors    ,
-             vector<string>& playerNames, vector<int>& playerScores,
-             int numPlayers                                         )
-{
+//Runs a single round of UNO, and tallies a score for the winner based on the other player's hands.
+void PlayUno() {
     int currTurn = 0;
     bool PlayerPlayedLastCard = false;
     int winnerNum = -1;
@@ -135,35 +211,23 @@ void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
         {
             // Player 1's Turn
             case 0:
-                PlayerTurn(player1Hand, player1Colors, deckValues, deckColors                 ,
-                           player1Hand, player1Colors, player2Hand, player2Colors             ,
-                           player3Hand, player3Colors, player4Hand, player4Colors             ,
-                           topDiscardValue, topDiscardColor, 0, numPlayers, IsReverse, currTurn);
-                WinCheck(playerNames.at(0), 0, player1Hand, player1Colors, PlayerPlayedLastCard, winnerNum);
+                PlayerTurn();
+                WinCheck();
                 break;
             // Player 2's Turn
             case 1:
-                PlayerTurn(player2Hand, player2Colors, deckValues, deckColors                 ,
-                           player1Hand, player1Colors, player2Hand, player2Colors             ,
-                           player3Hand, player3Colors, player4Hand, player4Colors             ,
-                           topDiscardValue, topDiscardColor, 1, numPlayers, IsReverse, currTurn);
-                WinCheck(playerNames.at(1), 1, player2Hand, player2Colors, PlayerPlayedLastCard, winnerNum);
+                PlayerTurn();
+                WinCheck();
                 break;
             // Player 3's Turn
             case 2:
-                PlayerTurn(player3Hand, player3Colors, deckValues, deckColors                 ,
-                           player1Hand, player1Colors, player2Hand, player2Colors             ,
-                           player3Hand, player3Colors, player4Hand, player4Colors             ,
-                           topDiscardValue, topDiscardColor, 2, numPlayers, IsReverse, currTurn);
-                WinCheck(playerNames.at(2), 2, player3Hand, player3Colors, PlayerPlayedLastCard, winnerNum);
+                PlayerTurn();
+                WinCheck();
                 break;
             // Player 4's Turn
             case 3:
-                PlayerTurn(player4Hand, player4Colors, deckValues, deckColors                 ,
-                           player1Hand, player1Colors, player2Hand, player2Colors             ,
-                           player3Hand, player3Colors, player4Hand, player4Colors             ,
-                           topDiscardValue, topDiscardColor, 3, numPlayers, IsReverse, currTurn);
-                WinCheck(playerNames.at(3), 3, player4Hand, player4Colors, PlayerPlayedLastCard, winnerNum);
+                PlayerTurn();
+                WinCheck();
                 break;
         }
 
@@ -191,7 +255,7 @@ void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
             // Obtains null input, then discards it to simulate "Press 'enter' to continue..."
             cout << "Press \'Enter\' to continue...\n";
             cin.get();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore();
         }
 
     } while(PlayerPlayedLastCard != true);

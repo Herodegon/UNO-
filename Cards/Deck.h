@@ -7,10 +7,15 @@
 
 class Deck {
     public:
+        Deck() {Build();}
+        
+        //Shuffle UNO Deck
         void Shuffle();
     
     private:
         std::vector<Cards*> deck;
+        
+        void Build();
 };
 
 #endif

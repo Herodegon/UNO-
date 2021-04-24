@@ -25,12 +25,16 @@ class Game {
         int CountHandScore() const;
     
     private:
+        unsigned int numPlayers;
+        std::vector<std::string> playerNames;
+        std::vector<unsigned int> playerScores;
+    
         Deck deckPile; //UNO Deck
         Deck disPile; //Discard Pile
         
         std::vector<Hand> playerHands; //Collection of All Player Hands
         
-        
+        void Intro();
 };
 
 #endif

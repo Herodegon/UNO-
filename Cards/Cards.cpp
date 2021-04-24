@@ -1,5 +1,20 @@
 #include "Cards.h"
 
+char Cards::GetColor() {
+    switch(cardInfo.color) {
+        case BLUE:
+            return 'B';
+        case GREEN:
+            return 'G';
+        case RED:
+            return 'R';
+        case YELLOW:
+            return 'Y';
+    }
+}
+
+/*****************************************************/
+
 //!TODO: FINISH FUNCTION
 //Card Function: Skips the next playr's turn.
 void SkipCard() {

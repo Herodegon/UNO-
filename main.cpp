@@ -77,7 +77,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-using namespace std;
 
 // Function Prototype for Tutorial
 void Tutorial();
@@ -377,7 +376,7 @@ int main()
 /************************************************************************************************************************/
 
 
-
+/*!MOVED: "Game.h"; REMOVE
 // Runs the player through an interactive tutorial for playing UNO
 void Tutorial()
 {
@@ -404,7 +403,7 @@ void Tutorial()
     tutorial.close();
     cout << "END OF TUTORIAL" << endl;
 }
-
+*/
 
 
 // Creates the UNO deck

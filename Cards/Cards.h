@@ -6,7 +6,12 @@
 
 enum CardType {
     NUMBER,
-    SKIP, REVERSE, DRAW2, WILD, WILD4, BLANK, 
+    SKIP = 10, 
+    REVERSE = 11, 
+    DRAW2 = 12, 
+    WILD = 13, 
+    WILD4 = 14, 
+    BLANK = 15, 
     NUM_TYPES
 };
 
@@ -21,17 +26,20 @@ struct Info {
 };
 
 class Cards {
+    public:
+    
+        //Print Card in ASCII Characters
+        void PrintCard();
+        
+        std::string Print_CardTop()    {return ".---. ";}
+        virtual std::string Print_CardMiddle() const = 0;
+        std::string Print_CardBottom() {return "'---' ";}
+    
     protected:
         
         //Accessors for Card Info
         char GetColor() const;
         std::string GetName() const;
-        
-        //Print Card in ASCII Characters
-        void Print() const;
-        std::string Print_CardTop()    {return ".---.";}
-        virtual std::string Print_CardMiddle() = 0;
-        std::string Print_CardBottom() {return "'---'";}
         
         //Print Card Name
         virtual std::string GetDesc() const = 0;

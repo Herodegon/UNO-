@@ -3,6 +3,7 @@
 #include "Cards.h"
 
 char Cards::GetColor() const {
+    
     switch(cardInfo.color) {
         case BLUE:
             return 'B';
@@ -18,12 +19,19 @@ char Cards::GetColor() const {
     }
 }
 
+void PrintCard() {
+    
+    std::cout << Print_CardTop()
+              << Print_CardMiddle()
+              << Print_CardBottom();
+}
+
 /*****************************************************/
 
 std::string Number::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << cardInfo.numValue << " " << GetColor() << "|\n";
+    str << "|" << cardInfo.numValue << " " << GetColor() << "| \n";
     
     return str.str();
 }
@@ -33,7 +41,7 @@ std::string Number::Print_CardMiddle() const {
 std::string Skip::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << 'S' << " " << GetColor() << "|\n";
+    str << "|" << 'S' << " " << GetColor() << "| \n";
     
     return str.str();
 }
@@ -43,7 +51,7 @@ std::string Skip::Print_CardMiddle() const {
 std::string Reverse::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << 'R' << " " << GetColor() << "|\n";
+    str << "|" << 'R' << " " << GetColor() << "| \n";
     
     return str.str();
 }
@@ -53,7 +61,7 @@ std::string Reverse::Print_CardMiddle() const {
 std::string Draw2::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << 'D' << " " << GetColor() << "|\n";
+    str << "|" << 'D' << " " << GetColor() << "| \n";
     
     return str.str();
 }
@@ -63,7 +71,7 @@ std::string Draw2::Print_CardMiddle() const {
 std::string Wild::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << " W " << "|\n";
+    str << "|" << " W " << "| \n";
     
     return str.str();
 }
@@ -73,7 +81,7 @@ std::string Wild::Print_CardMiddle() const {
 std::string Wild4::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << "W" << " " << "4" << "|\n";
+    str << "|" << "W" << " " << "4" << "| \n";
     
     return str.str();
 }
@@ -83,7 +91,7 @@ std::string Wild4::Print_CardMiddle() const {
 std::string Blank::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << " B " << "|\n";
+    str << "|" << " B " << "| \n";
     
     return str.str();
 }

@@ -15,7 +15,7 @@ class Game {
         void Tutorial() const;
         
         //Runs Through 1 Round of UNO
-        void PlayGame();
+        void Round();
         
         //Runs Through Player Turn
         void Turn();
@@ -28,13 +28,31 @@ class Game {
         unsigned int numPlayers;
         std::vector<std::string> playerNames;
         std::vector<unsigned int> playerScores;
+        
+        int turn;
+        bool isReverse;
     
         Deck deckPile; //UNO Deck
-        Deck disPile; //Discard Pile
+        Deck discardPile; //Discard Pile
         
         std::vector<Hand> playerHands; //Collection of All Player Hands
         
+        //Tutorial
         void Intro();
+        
+        //Functions for Turn
+        Cards* Draw();
+        void Play(Cards*);
+        
+        //Special Card Effects
+        void SkipCard();
+        void ReverseCard();
+        void Draw2Card();
+        void WildCard();
+        void Wild4Card();
+        void BlankCard();
+        
+        
 };
 
 #endif

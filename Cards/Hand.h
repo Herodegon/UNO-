@@ -9,7 +9,7 @@ class Hand {
     public:
     
     private:
-        std::vector<Cards> hand;
+        std::vector<Cards*> hand;
 };
 
 #endif

@@ -24,14 +24,17 @@ class Cards {
     protected:
         
         //Accessors for Card Info
-        virtual char GetSymbol() const = 0;
         char GetColor() const;
         std::string GetName() const;
         
         //Print Card in ASCII Characters
         void Print() const;
         std::string Print_CardTop()    {return ".---.";}
+        virtual std::string Print_CardMiddle() = 0;
         std::string Print_CardBottom() {return "'---'";}
+        
+        //Print Card Name
+        virtual std::string GetDesc() const = 0;
         
         //Card Type and Color
         Info cardInfo;
@@ -46,7 +49,9 @@ class Number : public Cards {
             cardInfo.color = color;
         }
         
-        char GetSymbol() const {return cardInfo.numValue;}
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 /*************************************************************/
@@ -56,6 +61,10 @@ class Skip : public Cards {
         Skip(CardColor color) {
             cardInfo.color = color;
         }
+        
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 /*************************************************************/
@@ -65,6 +74,10 @@ class Reverse : public Cards {
         Reverse(CardColor color) {
             cardInfo.color = color;
         }
+        
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 /*************************************************************/
@@ -74,6 +87,10 @@ class Draw2 : public Cards {
         Draw2(CardColor color) {
             cardInfo.color = color;
         }
+        
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 /*************************************************************/
@@ -83,6 +100,10 @@ class Wild : public Cards {
         Wild(CardColor color) {
             cardInfo.color = color;
         }
+        
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 /*************************************************************/
@@ -92,15 +113,19 @@ class Wild4 : public Cards {
         Wild4(CardColor color) {
             cardInfo.color = color;
         }
+        
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 /*************************************************************/
 
 class Blank : public Cards {
     public:
-        Blank(CardColor color) {
-            cardInfo.color = color;
-        }
+        std::string Print_CardMiddle() const;
+        
+        std::string GetDesc() const;
 };
 
 #endif

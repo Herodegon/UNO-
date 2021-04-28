@@ -30,16 +30,29 @@ void Deck::Shuffle() {
                         newCard = new Draw2(i);
                         break;
                 }
+                
+                deck.push_back(newCard);
             }
         }
     }
     
-    for(int i = 13; i <= 15; i++) {                     //NEUTRAL CARDS = 12 CARDS
-                                                            //Wild ('13'), Wild Draw 4 ('14'), Blank ('15')
-        for(int j = 0; j < 4; j++) {                    //4 of each type
-        
-            deckValues.push_back(i);
-            deckValuesColors.push_back('N');
+    for(int i = 13; i <= 15; i++) {                     //NEUTRAL CARDS = 12 CARDS                                                    
+        for(int j = 0; j < 4; j++) {                        //Wild ('13'), Wild Draw 4 ('14'), Blank ('15')
+            Cards *newCard;                             //4 of each type
+            
+            switch(i) {
+                case WILD:
+                    newCard = new Wild();
+                    break;
+                case WILD4:
+                    newCard = new Wild4();
+                    break;
+                case BLANK:
+                    newCard = new Blank();
+                    break;
+            }
+            
+            deck.push_back(newCard);
         }
     }
 }

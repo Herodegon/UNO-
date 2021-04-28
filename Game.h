@@ -15,7 +15,7 @@ class Game {
         void Tutorial() const;
         
         //Runs Through 1 Round of UNO
-        void Round();
+        void GameState();
         
         //Runs Through Player Turn
         void Turn();
@@ -36,6 +36,7 @@ class Game {
         Deck discardPile; //Discard Pile
         
         std::vector<Hand> playerHands; //Collection of All Player Hands
+        unsigned int currPlayer //Current Player's Turn
         
         //Tutorial
         void Intro();

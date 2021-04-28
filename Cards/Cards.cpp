@@ -19,7 +19,7 @@ char Cards::GetColor() const {
     }
 }
 
-void PrintCard() {
+void Cards::PrintCard() {
     
     std::cout << Print_CardTop()
               << Print_CardMiddle()

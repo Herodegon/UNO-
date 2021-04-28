@@ -1,7 +1,6 @@
 #include "Deck.h"
 
 void Deck::Shuffle() {
-    //Card Colors = (Blue, Green, Red, Yellow)
 
     //Reset Deck
     deck.resize(0);

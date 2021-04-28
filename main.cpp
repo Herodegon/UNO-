@@ -278,7 +278,7 @@ int main()
     // === Game Start ===
     int currRound = 0; // Current round of game
     srand(time(NULL)); // Random Seed for Shuffling
-    char shouldGameContinue; // Determines how long players want the game to go on for
+    bool shouldGameContinue; // Determines how long players want the game to go on for
 
     do {
         // If current round isn't 0, rebuild deck
@@ -405,7 +405,7 @@ void Tutorial()
 }
 */
 
-
+/*!MOVED "Deck.h"; REMOVE
 // Creates the UNO deck
 void DeckBuilder(vector<int>& deckValues, vector<char>& deckValuesColors)
 {
@@ -452,8 +452,8 @@ void DeckBuilder(vector<int>& deckValues, vector<char>& deckValuesColors)
         cout << "[Card " << i << "] Type: " << deckValues.at(i) << " / Color: " << deckValuesColors.at(i) << endl;
     }
     cout << endl;
-    */
 }
+*/
 
 
 

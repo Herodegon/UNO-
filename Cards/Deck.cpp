@@ -1,6 +1,6 @@
 #include "Deck.h"
 
-void Deck::Shuffle() {
+void Deck::Build() {
 
     //Reset Deck
     deck.resize(0);
@@ -54,5 +54,18 @@ void Deck::Shuffle() {
             
             deck.push_back(newCard);
         }
+    }
+}
+
+void Deck::Shuffle() {
+    
+    //Shuffle Cards in Deck (2 Cards at a Time)
+    for(unsigned int i = 0; i < (deck.size() * 3); i++) {
+        int cardLoc1 = rand() % deck.size();
+        int cardLoc2 = rand() % deck.size();
+        
+        Cards* temp = deck.at(cardLoc1);
+        deck.at(cardLoc1) = deck.at(cardLoc2);
+        deck.at(cardLoc2) = temp;
     }
 }

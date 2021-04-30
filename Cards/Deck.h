@@ -12,6 +12,9 @@ class Deck {
         //Operators
         void operator=(Deck deck2) {deck = deck2.deck;}
         
+        //Create UNO Deck
+        void Build();
+        
         //Shuffle UNO Deck
         void Shuffle();
         

@@ -28,7 +28,16 @@ struct Info {
 
 class Cards {
     public:
-    
+        
+        //Accessors for Card Info
+        int Info_GetNumVal() const {return cardInfo.numValue;}
+        CardType Info_GetType() const {return cardInfo.type;}
+        CardColor Info_GetColor() const {return cardInfo.color;}
+        
+        void Info_SetNumVal(int numValue) {this->cardInfo.numValue = numValue;}
+        void Info_SetType(unsigned int type) {this->cardInfo.type = static_cast<CardType>(type);}
+        void Info_SetColor(unsigned int color) {this->cardInfo.color = static_cast<CardColor>(color);}
+        
         //Print Card in ASCII Characters
         void PrintCard();
         
@@ -38,12 +47,9 @@ class Cards {
     
     protected:
     
-        //Accessors for Card Info
+        //Print Functions
         char GetColor() const;
-        std::string GetName() const;
-        
-        //Print Card Name
-        virtual std::string GetDesc() const = 0;
+        virtual std::string GetName() const = 0;
         
         //Card Type and Color
         Info cardInfo;
@@ -60,7 +66,7 @@ class Number : public Cards {
         
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Number " + Info_GetNumVal();}
 };
 
 /*************************************************************/
@@ -73,7 +79,7 @@ class Skip : public Cards {
         
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Skip";}
 };
 
 /*************************************************************/
@@ -86,7 +92,7 @@ class Reverse : public Cards {
         
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Reverse";}
 };
 
 /*************************************************************/
@@ -99,7 +105,7 @@ class Draw2 : public Cards {
         
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Draw 2";}
 };
 
 /*************************************************************/
@@ -109,7 +115,7 @@ class Wild : public Cards {
     
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Wild";}
 };
 
 /*************************************************************/
@@ -119,7 +125,7 @@ class Wild4 : public Cards {
     
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Wild 4";}
 };
 
 /*************************************************************/
@@ -129,7 +135,7 @@ class Blank : public Cards {
     
         std::string Print_CardMiddle() const;
         
-        std::string GetDesc() const;
+        std::string GetName() const {return "Blank";}
 };
 
 #endif

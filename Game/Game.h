@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 
-#include "Cards/Deck.h"
-#include "Cards/Hand.h"
+#include "../Cards/Deck.h"
+#include "../Cards/Hand.h"
 
 class Game {
     public:
@@ -23,6 +23,9 @@ class Game {
         //Scores Player Hands
         int ScoreTally() const;
         int CountHandScore() const;
+        
+        //Error Test
+        bool isFail() const {return fail == true;}
     
     private:
         unsigned int numPlayers;
@@ -36,13 +39,13 @@ class Game {
         Deck discardPile; //Discard Pile
         
         std::vector<Hand> playerHands; //Collection of All Player Hands
-        unsigned int currPlayer //Current Player's Turn
+        unsigned int currPlayer; //Current Player's Turn
         
         //Tutorial
         void Intro();
         
         //Functions for Turn
-        Cards* Draw();
+        Cards* Draw(Hand player, unsigned int numCards);
         void Play(Cards*);
         
         //Special Card Effects
@@ -53,7 +56,7 @@ class Game {
         void Wild4Card();
         void BlankCard();
         
-        
+        bool fail = false;
 };
 
 #endif

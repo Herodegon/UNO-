@@ -4,9 +4,6 @@ Game::Game() {
     
     //Tutorial and Get Number/Names of Players
     Intro();
-    
-    //Shuffle Deck
-    deckPile.Shuffle();
 }
 
 void Game::Intro() {
@@ -111,38 +108,46 @@ void Game::Tutorial() const {
 //Runs a single round of UNO, and tallies a score for the winner based on the other player's hands.
 void Game::GameState() {
     
-    // Create Discard Pile
+    //(Re)Build Deck and Shuffle
+    deckPile.Build();
+    deckPile.Shuffle();
+    
+    //Create Discard Pile
     discardPile.Push_Back(deckPile.Top());
 
-    deckPile.pop_back();
+    deckPile.Pop_Back();
 
-    // Check discard card drawn for special cases
-    switch(topDiscardValue)
-    {
-        case 15: // If the card is Blank, choose a random number and color
-            topDiscardValue = rand() % 10;
-
-        case 13: // If the card is Wild/Wild 'Draw 4', choose a random color
-        case 14:
-            char Colors[4] = {'B', 'G', 'R', 'Y'};
-            topDiscardColor = Colors[rand() % 4];
+    //Check Top Discard for Special Cases
+    switch(discardPile.Top()->Info_GetType()) {
+        
+        //If the card is Blank, choose a random number and color
+        case BLANK:
+            discardPile.At(0)->Info_SetNumVal(rand() % 10);
+            //Continue to Next Case
+        
+        //If the card is Wild/Wild 'Draw 4', choose a random color
+        case WILD:  
+        case WILD4:
+            discardPile.At(0)->Info_SetColor(rand() % NUM_COLORS);
+            break;
+            
+        //Else, nothing occurs
+        default:
             break;
     }
 
-    // Draw Cards for Players
-    switch(numPlayers)
-    {
+    //Draw Cards for Players
+    switch(numPlayers) {
         case 4: // 4-Players
-            Draw(playerHands.at(3))
+            Draw(playerHands.at(3), 7);
         case 3: // 3-Players
-            Draw(playerHands.at(2));
+            Draw(playerHands.at(2), 7);
         case 2: // 2-Players
-            Draw(playerHands.at(1));
-            Draw(playerHands.at(0));
+            Draw(playerHands.at(1), 7);
+            Draw(playerHands.at(0), 7);
     }
 
-    // Run player turns while no one has played their last card
-    bool IsReverse = false;
+    //Play Turns Until One Player Has No Cards Remaining
     do {
         cout << "Player Turn Runs" << endl; // <--------------------------------------------------------- FIXME; REMOVE
         cout << "=== " << playerNames.at(currTurn % numPlayers) << "\'s Turn ===" << endl;

@@ -77,7 +77,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
-using namespace std;
 
 // Function Prototype for Tutorial
 void Tutorial();
@@ -164,6 +163,7 @@ int CountHandScore(const vector<int> playerHand);
 // === UNO Card Game ===
 int main()
 {
+    /*!MOVED "Game.h"; REMOVE
     char playTutorial = 'a';         // Check if players want to go through gamerules
     int numPlayers = 2;              // Total # of players (Default 2)
     vector<string> playerNames;      // Names of players
@@ -236,7 +236,6 @@ int main()
 
              Therefore:
              John goes first, George goes second
-    */
 
     /* TEST; Names REMOVE
     for (int i = 0; i < numPlayers; i++)
@@ -246,7 +245,7 @@ int main()
     return 0;
     */
 
-
+    
     // === UNO Deck ===
     vector<int> deckValues;                          // DECK SIZE = 112 CARDS TOTAL
     vector<char> deckValuesColors;                     // 76 Numbers; 24 Special; 12 Neutral
@@ -279,7 +278,7 @@ int main()
     // === Game Start ===
     int currRound = 0; // Current round of game
     srand(time(NULL)); // Random Seed for Shuffling
-    char shouldGameContinue; // Determines how long players want the game to go on for
+    bool shouldGameContinue; // Determines how long players want the game to go on for
 
     do {
         // If current round isn't 0, rebuild deck
@@ -377,7 +376,7 @@ int main()
 /************************************************************************************************************************/
 
 
-
+/*!MOVED: "Game.h"; REMOVE
 // Runs the player through an interactive tutorial for playing UNO
 void Tutorial()
 {
@@ -404,9 +403,9 @@ void Tutorial()
     tutorial.close();
     cout << "END OF TUTORIAL" << endl;
 }
+*/
 
-
-
+/*!MOVED "Deck.h"; REMOVE
 // Creates the UNO deck
 void DeckBuilder(vector<int>& deckValues, vector<char>& deckValuesColors)
 {
@@ -453,8 +452,8 @@ void DeckBuilder(vector<int>& deckValues, vector<char>& deckValuesColors)
         cout << "[Card " << i << "] Type: " << deckValues.at(i) << " / Color: " << deckValuesColors.at(i) << endl;
     }
     cout << endl;
-    */
 }
+*/
 
 
 
@@ -944,8 +943,7 @@ void PlayerTurn(vector<int>& playerHand, vector<char>& playerColors, vector<int>
 
 }
 
-
-
+/*!MOVED "Game.h"; REMOVE
 // Runs a single round of UNO, and tallies a score for the winner based on the other player's hands.
 void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
              vector<int>& player2Hand, vector<char>& player2Colors ,
@@ -972,21 +970,17 @@ void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
     /* TEST; Wild Discard Card REMOVE
     topDiscardValue = 13;
     topDiscardColor = 'N';
-    */
 
     /* TEST; Wild 'Draw 4' Discard Card REMOVE
     topDiscardValue = 14;
     topDiscardColor = 'N';
-    */
 
     /* TEST; Blank Discard Card REMOVE
     topDiscardValue = 15;
     topDiscardColor = 'N';
-    */
 
     /* TEST; New Discard Type REMOVE
     cout << "Top Discard Value: " << topDiscardValue << endl;
-    */
 
     // Check discard card drawn for special cases
     switch(topDiscardValue)
@@ -1018,17 +1012,14 @@ void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
     player1Colors.push_back('B');
     topDiscardValue = 0;
     topDiscardColor = 'B';
-    */
 
     /* TEST; Wild Card REMOVE
     player1Hand.push_back(13);
     player1Colors.push_back('N');
-    */
 
     /* TEST; Blank Card REMOVE
     player1Hand.push_back(15);
     player1Colors.push_back('N');
-    */
 
     /* TEST; Win State REMOVE
     player1Hand.resize(1);
@@ -1037,7 +1028,6 @@ void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
     player1Colors.at(0) = 'B';
     topDiscardValue = 0;
     topDiscardColor = 'B';
-    */
 
     // Run player turns while no one has played their last card
     bool IsReverse = false;
@@ -1111,7 +1101,7 @@ void PlayUno(vector<int>& player1Hand, vector<char>& player1Colors ,
 
     playerScores.at(winnerNum) += ScoreTally(player1Hand, player2Hand, player3Hand, player4Hand);
 }
-
+*/
 
 
 // Chooses a routine based on the player's card value.
@@ -1177,8 +1167,7 @@ void CardPlayed(int playerCardValue, char playerCardColor, vector<int>& deckValu
     }
 }
 
-
-
+/*!MOVED "Cards.h"; REMOVE
 // Card Function: Skips the next playr's turn.
 void SkipCard(int playerCardValue, char playerCardColor, vector<int>& deckValues, vector<char>& deckColors                ,
               vector<int>& player1Hand, vector<char>& player1Colors, vector<int>& player2Hand, vector<char>& player2Colors,
@@ -1421,9 +1410,9 @@ void BlankCard(int playerCardValue, char playerCardColor, vector<int>& deckValue
     //cout << "Blank Discard Value: " << topDiscardValue << endl; // <--------------------------------------------- FIXME; REMOVE
     //cout << "Blank Discard Color: " << topDiscardColor << endl; // <--------------------------------------------- FIXME; REMOVE
 }
+*/
 
-
-
+/*!MOVED "Game.h"; REMOVE
 // Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
 // or if they have 0 (they've won the round).
 void WinCheck(const string playerName, const int playerNum,
@@ -1479,7 +1468,7 @@ int CountHandScore(const vector<int> playerHand)
       ==  o Wild                 -> 50 Points                       ==
       ==  o Wild 'Draw 4'        -> 50 Points                       ==
       ==  o Blank                -> Don't Count                     ==
-      ================================================================*/
+      ================================================================
     int handSum = 0;
 
     if(playerHand.size() != 0)
@@ -1508,3 +1497,4 @@ int CountHandScore(const vector<int> playerHand)
 
     return handSum;
 }
+*/

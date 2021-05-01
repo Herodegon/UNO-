@@ -74,6 +74,9 @@ void Game::Intro() {
              Therefore:
              John goes first, George goes second
     */
+    
+    //Set Player Scores
+    playerScores.resize(0, numPlayers);
 }
 
 //Runs the player through an interactive tutorial for playing UNO
@@ -139,72 +142,51 @@ void Game::GameState() {
     //Draw Cards for Players
     switch(numPlayers) {
         case 4: // 4-Players
-            Draw(playerHands.at(3), 7);
+            Draw(&playerHands.at(3), 7);
         case 3: // 3-Players
-            Draw(playerHands.at(2), 7);
+            Draw(&playerHands.at(2), 7);
         case 2: // 2-Players
-            Draw(playerHands.at(1), 7);
-            Draw(playerHands.at(0), 7);
+            Draw(&playerHands.at(1), 7);
+            Draw(&playerHands.at(0), 7);
     }
 
     //Play Turns Until One Player Has No Cards Remaining
     do {
-        cout << "Player Turn Runs" << endl; // <--------------------------------------------------------- FIXME; REMOVE
-        cout << "=== " << playerNames.at(currTurn % numPlayers) << "\'s Turn ===" << endl;
-        switch(currTurn % numPlayers)
-        {
-            // Player 1's Turn
-            case 0:
-                Turn();
-                WinCheck();
-                break;
-            // Player 2's Turn
-            case 1:
-                Turn();
-                WinCheck();
-                break;
-            // Player 3's Turn
-            case 2:
-                Turn();
-                WinCheck();
-                break;
-            // Player 4's Turn
-            case 3:
-                Turn();
-                WinCheck();
-                break;
-        }
+        //Announce Who's Turn It Is
+        std::cout << "=== Player " << turn % numPlayers << "'s Turn ===\n"
+                  << std::endl;
+        
+        //Retrieve Curr Player's Hand
+        currPlayer = &playerHands.at(turn % numPlayers);
+        
+        //Execute Curr Player's Turn
+        Turn();
 
-        // Next Player
-        if(IsReverse == true)
-        {
-            if(currTurn == 0)
-            {
-                currTurn = numPlayers;
+        //Cycle Turn Based 
+        if(isReverse == true) {
+            if(turn == 0) {
+                turn = numPlayers;
             }
-            currTurn--;
+            turn--;
         }
         else {
-            currTurn++;
+            turn++;
         }
 
         // End of Turn Summary
-        if(PlayerPlayedLastCard != true)
-        {
-            cout << "=== End of Turn ===\n";
-            DisplayTopDiscardCard(topDiscardValue, topDiscardColor); // Displays new top discard card
-
-            cout << "Next up is " << playerNames.at(currTurn % numPlayers) << "'s turn.\n"; // Alerts next player
-
-            // Obtains null input, then discards it to simulate "Press 'enter' to continue..."
-            cout << "Press \'Enter\' to continue...\n";
-            cin.get();
-            cin.ignore();
+        if(playedLastCard() == false) {
+            std::cout << "=== End of Turn ===\n" << std::endl;
+            
+            std::cout << "Top Card on Discard Pile\n";
+            discardPile.Top()->PrintCard();
+            
+            std::cout << "Next up is Player " << turn % numPlayers << std::endl
+                      << std::endl
+                      << "Press \'Enter\' to continue...\n";
+            std::cin.get();
+            std::cin.ignore();
         }
-
-    } while(PlayerPlayedLastCard != true);
-
-    playerScores.at(winnerNum) += ScoreTally(player1Hand, player2Hand, player3Hand, player4Hand);
+    } while(playedLastCard() != true);
 }
 
 //!TODO: REWRITE FUNCTION
@@ -286,6 +268,15 @@ int CountHandScore() const {
 }
 
 /*****************************************************/
+
+void Game::Draw(Hand *player, unsigned int numCards) {
+    
+    for(unsigned int i = 0; i < numCards; i++) {
+        player.push_back(deckPile.Top());
+        
+        deckPile.Pop_Back();
+    }
+}
 
 //!TODO: FINISH FUNCTION
 //Card Function: Skips the next playr's turn.

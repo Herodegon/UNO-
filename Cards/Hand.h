@@ -45,7 +45,12 @@ class Hand {
             }
             std::cout << std::endl;
         }
-    
+        
+        //Hand Accessors
+        unsigned int Size() const {return hand.size();}
+        
+        Cards* At(unsigned int i) const {return hand.at(i);}
+        
     private:
         std::vector<Cards*> hand;
 };

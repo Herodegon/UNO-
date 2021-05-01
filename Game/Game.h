@@ -12,7 +12,6 @@
 class Game {
     public:
         Game();
-        void Tutorial() const;
         
         //Runs Through 1 Round of UNO
         void GameState();
@@ -20,12 +19,11 @@ class Game {
         //Runs Through Player Turn
         void Turn();
         
-        //Scores Player Hands
-        int ScoreTally() const;
-        int CountHandScore() const;
+        void Draw(Hand *player, unsigned int numCards);
+        void Play(Cards*);
         
         //Win State Check
-        bool playedLastCard() const {return currPlayer->Size() == 0;}
+        bool WinCheck() const;
         
         //Error Test
         bool isFail() const {return fail == true;}
@@ -42,14 +40,18 @@ class Game {
         Deck discardPile; //Discard Pile
         
         std::vector<Hand> playerHands; //Collection of All Player Hands
-        Hand* currPlayer; //Current Player's Turn
         
-        //Tutorial
+        //Info Per Turn
+        unsigned int currNum; //Current Player's Number
+        Hand* currPlayer;     //Current Player's Hand
+        std::string currName; //Current Player's Name
+        
+        //Start of Game
         void Intro();
+        void Tutorial() const;
         
-        //Functions for Turn
-        void Draw(Hand *player, unsigned int numCards);
-        void Play(Cards*);
+        //Scoring System
+        unsigned int TallyHands();
         
         //Special Card Effects
         void SkipCard();

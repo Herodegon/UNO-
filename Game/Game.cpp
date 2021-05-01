@@ -107,7 +107,6 @@ void Game::Tutorial() const {
     std::cout << "END OF TUTORIAL\n";
 }
 
-//!TODO: REWRITE FUNCTION
 //Runs a single round of UNO, and tallies a score for the winner based on the other player's hands.
 void Game::GameState() {
     
@@ -152,17 +151,23 @@ void Game::GameState() {
 
     //Play Turns Until One Player Has No Cards Remaining
     do {
-        //Announce Who's Turn It Is
-        std::cout << "=== Player " << turn % numPlayers << "'s Turn ===\n"
-                  << std::endl;
+        currNum = turn % numPlayers;
         
-        //Retrieve Curr Player's Hand
-        currPlayer = &playerHands.at(turn % numPlayers);
+        //Retrieve Curr Player's Hand and Name
+        currPlayer = &playerHands.at(currNum);
+        currName = playerNames.at(currNum);
+        
+        //Announce Who's Turn It Is
+        std::cout << "=== " << currName << "'s Turn ===\n"
+                  << std::endl;
         
         //Execute Curr Player's Turn
         Turn();
-
-        //Cycle Turn Based 
+        if(WinCheck() == true) {
+            break;
+        }
+        
+        //Cycle Turn based on  
         if(isReverse == true) {
             if(turn == 0) {
                 turn = numPlayers;
@@ -174,63 +179,46 @@ void Game::GameState() {
         }
 
         // End of Turn Summary
-        if(playedLastCard() == false) {
-            std::cout << "=== End of Turn ===\n" << std::endl;
+        std::cout << "=== End of Turn ===\n" << std::endl;
             
-            std::cout << "Top Card on Discard Pile\n";
-            discardPile.Top()->PrintCard();
+        std::cout << "Top Card on Discard Pile\n";
+        discardPile.Top()->PrintCard();
             
-            std::cout << "Next up is Player " << turn % numPlayers << std::endl
-                      << std::endl
-                      << "Press \'Enter\' to continue...\n";
-            std::cin.get();
-            std::cin.ignore();
-        }
-    } while(playedLastCard() != true);
+        std::cout << "Next up is " << playerNames.at(turn % numPlayers) << std::endl
+                  << std::endl
+                  << "Press \'Enter\' to continue...\n";
+        std::cin.get();
+        std::cin.ignore();
+    } while(WinCheck() == false);
+    
+    //Calculate Winner's Score
+    playerScores.at(currNum) += TallyHands();
 }
 
-//!TODO: REWRITE FUNCTION
 // Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
 // or if they have 0 (they've won the round).
-void WinCheck(const string playerName, const int playerNum,
-              const vector<int> playerHand, const vector<char> playerColors,
-              bool& HasPlayerWon, int& winnerNum                            )
-{
-    // Does player have UNO?
-    if((playerHand.size() == 1) && (playerColors.size() == 1))
-    {
-        cout << playerName << " has called UNO!\n";
-        cout << endl;
+bool Game::WinCheck() const {
+    
+    //Does Player Have UNO?
+    if(currPlayer->Size() == 1) {
+        std::cout << currName << " has called UNO!\n"
+                  << std::endl;
+        return false;
     }
-    // Has player won?
-    else if((playerHand.size() == 0) && (playerColors.size() == 0))
-    {
-        HasPlayerWon = true;
-        cout << playerName << " won the round!\n";
-        cout << endl;
-
-        winnerNum = playerNum;
+    //Has Player Won?
+    else if(currPlayer->Size() == 0) {
+        std::cout << currName << " won the round!\n"
+                  << std::endl;
+        return true;
     }
-    // Player hasn't won and doesn't have UNO
+    //No UNO or Win; Ignore function
     else {
+        return false;
     }
 }
 
-//!TODO: REWRITE FUNCTION
-// Tallies up the score values of the playing hands to add to the round winner's total score.
-int ScoreTally() const {
-    int sum = 0;
-    sum += CountHandScore(player1Hand);
-    sum += CountHandScore(player2Hand);
-    sum += CountHandScore(player3Hand);
-    sum += CountHandScore(player4Hand);
-
-    return sum;
-}
-
-//!TODO: REWRITE FUNCTION
 // Converts the player's hand into points, and returns the total.
-int CountHandScore() const {
+unsigned int Game::TallyHands() {
     /*================================================================
       ==  Point Conversion Table                                    ==
       ==  o Numbered Cards (0-9) -> Face Value                      ==
@@ -241,30 +229,42 @@ int CountHandScore() const {
       ==  o Wild 'Draw 4'        -> 50 Points                       ==
       ==  o Blank                -> Don't Count                     ==
       ================================================================*/
-    int handSum = 0;
-
-    if(playerHand.size() != 0) {
-        for(int i = 0; i < playerHand.size(); i++) {
-            switch(playerHand.at(i)) {
-                case 10:
-                case 11:
-                case 12:
-                    handSum += 20;
-                    break;
-                case 13:
-                case 14:
-                    handSum += 50;
-                    break;
-                case 15:
-                    break;
-                default:
-                    handSum += playerHand.at(i);
-                    break;
+    unsigned int sum = 0;
+    
+    Hand playerHand;
+    CardType cardType;
+    for(unsigned int i = 0; i < numPlayers; i++) {
+        playerHand = playerHands.at(i);
+        
+        if(playerHand.Size() != 0) {
+            for(unsigned int k = 0; k < playerHand.Size(); k++) {
+                cardType = playerHand.At(k)->Info_GetType();
+                
+                switch(cardType) {
+                    //Reverse, Skip, or Draw 2 == 20 Points
+                    case REVERSE:
+                    case SKIP:
+                    case DRAW2:
+                        sum += 20;
+                        break;
+                    //Wild or Wild 4 == 50 Points
+                    case WILD:
+                    case WILD4:
+                        sum += 50;
+                        break;
+                    //Blank == 0 Points
+                    case BLANK:
+                        break;
+                    //Number == Card Value in Points
+                    default:
+                        sum += playerHand.At(k)->Info_GetNumVal();
+                        break;
+                }
             }
         }
     }
 
-    return handSum;
+    return sum;
 }
 
 /*****************************************************/

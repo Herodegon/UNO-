@@ -24,6 +24,9 @@ class Game {
         int ScoreTally() const;
         int CountHandScore() const;
         
+        //Win State Check
+        bool playedLastCard() const {return currPlayer->Size() == 0;}
+        
         //Error Test
         bool isFail() const {return fail == true;}
     
@@ -39,13 +42,13 @@ class Game {
         Deck discardPile; //Discard Pile
         
         std::vector<Hand> playerHands; //Collection of All Player Hands
-        unsigned int currPlayer; //Current Player's Turn
+        Hand* currPlayer; //Current Player's Turn
         
         //Tutorial
         void Intro();
         
         //Functions for Turn
-        Cards* Draw(Hand player, unsigned int numCards);
+        void Draw(Hand *player, unsigned int numCards);
         void Play(Cards*);
         
         //Special Card Effects

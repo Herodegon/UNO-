@@ -23,7 +23,7 @@ class Deck {
         void Pop_Back() {deck.pop_back();}
         
         //Deck Accessors
-        unsigned int Size() const   {return deck.size();}
+        unsigned int Size() const {return deck.size();}
         
         Cards *At(unsigned int i) const {return deck.at(i);}
         Cards *Top() const {return deck.back();}

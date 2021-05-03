@@ -11,7 +11,7 @@ class Deck {
         ~Deck();
         
         //Operators
-        void operator=(Deck deck2) {deck = deck2.deck;}
+        void operator=(Deck &deck2) {deck = deck2.deck; deck2.Empty();}
         
         //Create UNO Deck
         void Build();
@@ -22,6 +22,7 @@ class Deck {
         //Deck Manipulators
         void Push_Back(Cards *card) {deck.push_back(card);}
         void Pop_Back() {deck.pop_back();}
+        void Empty();
         
         //Deck Accessors
         unsigned int Size() const {return deck.size();}

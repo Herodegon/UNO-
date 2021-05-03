@@ -156,12 +156,12 @@ void Game::GameState() {
     //Draw Cards for Players
     switch(numPlayers) {
         case 4: // 4-Players
-            Draw(&playerHands.at(3), 7);
+            Draw(playerHands.at(3), 7);
         case 3: // 3-Players
-            Draw(&playerHands.at(2), 7);
+            Draw(playerHands.at(2), 7);
         case 2: // 2-Players
-            Draw(&playerHands.at(1), 7);
-            Draw(&playerHands.at(0), 7);
+            Draw(playerHands.at(1), 7);
+            Draw(playerHands.at(0), 7);
     }
 
     //Play Turns Until One Player Has No Cards Remaining
@@ -287,9 +287,17 @@ unsigned int Game::TallyHands() {
 void Game::Draw(Hand &player, unsigned int numCards) {
     
     for(unsigned int i = 0; i < numCards; i++) {
-        player.Push_Back(deckPile.Top());
         
-        deckPile.Pop_Back();
+        if(deckPile.Size() != 0) {
+            player.Push_Back(deckPile.Top());
+            
+            deckPile.Pop_Back();
+        }
+        else {
+            std::cout << "Reshuffling Deck...\n";
+            deckPile = discardPile;
+            deckPile.Shuffle();
+        }
     }
 }
 
@@ -324,96 +332,45 @@ void Game::Play(Hand &player, unsigned int cardInHand) {
     player.Pop(cardInHand);
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Skips the next playr's turn.
 void Game::SkipCard() {
     
-    if(isReverse == false) // If player rotation is normal
-    {
+    if(isReverse == false) { // If player rotation is normal
         turn++;
     }
-    else {                 // If player rotation is reversed
+    else {                   // If player rotation is reversed
         turn--;
     }
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Reverses the player order (If 3-Players: Player 3, then Player 2, then Player 1).
 void Game::ReverseCard() {
     
-    if(isReverse == false) // If player rotation is normal
-    {
+    if(isReverse == false) { // If player rotation is normal
         isReverse = true;
     }
-    else {                 // If player rotation is already reversed
+    else {                   // If player rotation is already reversed
         isReverse = false;
     }
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Makes the next player draw 2 cards.
 void Game::Draw2Card() {
-    
-    if(deckPile.size() != 0) {
-        for(int i = 0; i < 2; i++) { //Draw 2 Cards
-            switch(isReverse) {
-                case false: //Player rotation is normal
-                    if((playerNum + 1) == numPlayers) {
-                        player1Hand.push_back(deckValues.back());
-                        player1Colors.push_back(deckColors.back());
-                    }
-                    else {
-                        switch(playerNum) { // Player that has to draw
-                            case 0: // Player 1
-                                player2Hand.push_back(deckValues.back());
-                                player2Colors.push_back(deckColors.back());
-                                break;
-                            case 1: // Player 2
-                                player3Hand.push_back(deckValues.back());
-                                player3Colors.push_back(deckColors.back());
-                                break;
-                            case 2: // Player 3
-                                player4Hand.push_back(deckValues.back());
-                                player4Colors.push_back(deckColors.back());
-                                break;
-                        }
-                    }
-                    break;
+    unsigned int playerDraw; //Number of Player That Draws 2 Cards
+        
+    for(int i = 0; i < 2; i++) { //Draw 2 Cards
+        switch(isReverse) {
+            //Player rotation is normal
+            case false:
+                playerDraw = (currNum + 1) % numPlayers;
+                break;
 
-                // Player rotation is reversed
-                case true:
-                    // If player is first player, make the last player draw i.e., # of players
-                    if(playerNum == 0)
-                    {
-                        playerNum = numPlayers;
-                    }
-                    switch(playerNum) // Player that has to draw
-                    {
-                        case 1: // Player 2
-                            player1Hand.push_back(deckValues.back());
-                            player1Colors.push_back(deckColors.back());
-                            break;
-                        case 2: // Player 3
-                            player2Hand.push_back(deckValues.back());
-                            player2Colors.push_back(deckColors.back());
-                            break;
-                        case 3: // Player 4
-                            player3Hand.push_back(deckValues.back());
-                            player3Colors.push_back(deckColors.back());
-                            break;
-                    }
-                    break;
-            }
-
-            // Erase drawn card from deck
-            deckValues.pop_back();
-            deckColors.pop_back();
+            // Player rotation is reversed
+            case true:
+                playerDraw = (currNum - 1) % numPlayers;
         }
-    }
-    else {
-        cout << "Deck is empty\n";
-        DeckBuilder(deckValues, deckColors);
-        DeckShuffle(deckValues, deckColors);
+            
+        Draw(playerHands.at(playerDraw), 2);
     }
 }
 

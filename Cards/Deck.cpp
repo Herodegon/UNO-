@@ -77,3 +77,11 @@ void Deck::Shuffle() {
         deck.at(cardLoc2) = temp;
     }
 }
+
+void Deck::Empty() {
+    
+    for(size_t i = deck.size() - 1; i >= deck.size(); i--) {
+        
+        deck.erase(deck.begin()+i);
+    }
+}

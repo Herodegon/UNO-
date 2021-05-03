@@ -156,12 +156,12 @@ void Game::GameState() {
     //Draw Cards for Players
     switch(numPlayers) {
         case 4: // 4-Players
-            Draw(&playerHands.at(3), 7);
+            Draw(playerHands.at(3), 7);
         case 3: // 3-Players
-            Draw(&playerHands.at(2), 7);
+            Draw(playerHands.at(2), 7);
         case 2: // 2-Players
-            Draw(&playerHands.at(1), 7);
-            Draw(&playerHands.at(0), 7);
+            Draw(playerHands.at(1), 7);
+            Draw(playerHands.at(0), 7);
     }
 
     //Play Turns Until One Player Has No Cards Remaining
@@ -210,8 +210,8 @@ void Game::GameState() {
     playerScores.at(currNum) += TallyHands();
 }
 
-// Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
-// or if they have 0 (they've won the round).
+//Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
+//or if they have 0 (they've won the round).
 bool Game::WinCheck() const {
     
     //Does Player Have UNO?
@@ -287,8 +287,15 @@ unsigned int Game::TallyHands() {
 void Game::Draw(Hand &player, unsigned int numCards) {
     
     for(unsigned int i = 0; i < numCards; i++) {
-        player.Push_Back(deckPile.Top());
         
+        if(deckPile.Size() == 0) {
+            std::cout << "Reshuffling Deck...\n";
+            deckPile = discardPile;
+            deckPile.Shuffle();
+        }
+        
+        player.Push_Back(deckPile.Top());
+            
         deckPile.Pop_Back();
     }
 }
@@ -324,120 +331,93 @@ void Game::Play(Hand &player, unsigned int cardInHand) {
     player.Pop(cardInHand);
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Skips the next playr's turn.
 void Game::SkipCard() {
     
-    if(isReverse == false) // If player rotation is normal
-    {
+    if(isReverse == false) { // If player rotation is normal
         turn++;
     }
-    else {                 // If player rotation is reversed
+    else {                   // If player rotation is reversed
         turn--;
     }
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Reverses the player order (If 3-Players: Player 3, then Player 2, then Player 1).
 void Game::ReverseCard() {
     
-    if(isReverse == false) // If player rotation is normal
-    {
+    if(isReverse == false) { // If player rotation is normal
         isReverse = true;
     }
-    else {                 // If player rotation is already reversed
+    else {                   // If player rotation is already reversed
         isReverse = false;
     }
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Makes the next player draw 2 cards.
 void Game::Draw2Card() {
-    
-    if(deckPile.size() != 0) {
-        for(int i = 0; i < 2; i++) { //Draw 2 Cards
-            switch(isReverse) {
-                case false: //Player rotation is normal
-                    if((playerNum + 1) == numPlayers) {
-                        player1Hand.push_back(deckValues.back());
-                        player1Colors.push_back(deckColors.back());
-                    }
-                    else {
-                        switch(playerNum) { // Player that has to draw
-                            case 0: // Player 1
-                                player2Hand.push_back(deckValues.back());
-                                player2Colors.push_back(deckColors.back());
-                                break;
-                            case 1: // Player 2
-                                player3Hand.push_back(deckValues.back());
-                                player3Colors.push_back(deckColors.back());
-                                break;
-                            case 2: // Player 3
-                                player4Hand.push_back(deckValues.back());
-                                player4Colors.push_back(deckColors.back());
-                                break;
-                        }
-                    }
-                    break;
-
-                // Player rotation is reversed
-                case true:
-                    // If player is first player, make the last player draw i.e., # of players
-                    if(playerNum == 0)
-                    {
-                        playerNum = numPlayers;
-                    }
-                    switch(playerNum) // Player that has to draw
-                    {
-                        case 1: // Player 2
-                            player1Hand.push_back(deckValues.back());
-                            player1Colors.push_back(deckColors.back());
-                            break;
-                        case 2: // Player 3
-                            player2Hand.push_back(deckValues.back());
-                            player2Colors.push_back(deckColors.back());
-                            break;
-                        case 3: // Player 4
-                            player3Hand.push_back(deckValues.back());
-                            player3Colors.push_back(deckColors.back());
-                            break;
-                    }
-                    break;
-            }
-
-            // Erase drawn card from deck
-            deckValues.pop_back();
-            deckColors.pop_back();
+    unsigned int playerDraw; //Number of Player That Draws 2 Cards
+        
+    for(unsigned int i = 0; i < 2; i++) { //Draw 2 Cards
+        
+        if(deckPile.Size() == 0) {
+            std::cout << "Reshuffling Deck...";
+            deckPile = discardPile;
+            deckPile.Shuffle();
         }
-    }
-    else {
-        cout << "Deck is empty\n";
-        DeckBuilder(deckValues, deckColors);
-        DeckShuffle(deckValues, deckColors);
+        
+        switch(isReverse) {
+            //Player rotation is normal
+            case false:
+                playerDraw = (currNum + 1) % numPlayers;
+                break;
+
+            // Player rotation is reversed
+            case true:
+                playerDraw = (currNum - 1) % numPlayers;
+        }
+            
+        Draw(playerHands.at(playerDraw), 2);
     }
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Let's the player choose the color of the top card on the discard pile.
 void Game::WildCard() {
     
     char playerColorChoice;
+    
     do {
-        cout << "What color would you like the discard pile to be? Enter \'B\', \'G\', \'R\', or \'Y\'.\n";
-        cin >> playerColorChoice;
-        cout << endl;
-        if((playerColorChoice != 'B') && (playerColorChoice != 'G') &&
-           (playerColorChoice != 'R') && (playerColorChoice != 'Y'))
-        {
-            cout << "Please enter a valid color.\n";
+        fail = false;
+        
+        //Player Input for Color
+        std::cout << "What color would you like the discard pile to be? Enter \'B\', \'G\', \'R\', or \'Y\'.\n";
+        std::cin >> playerColorChoice;
+        std::cout << std::endl;
+        
+        //Assign Color to Top of Discard Pile
+        unsigned int color;
+        switch(playerColorChoice) {
+            case 'B':
+                color = BLUE;
+            case 'G':
+                color = GREEN;
+                break;
+            case 'R':
+                color = RED;
+                break;
+            case 'Y':
+                color = YELLOW;
+                break;
+            default:
+                std::cout << "Please enter a color.\n" << std::endl;
+                std::cin.ignore();
+                break;
+                
         }
-    } while((playerColorChoice != 'B') && (playerColorChoice != 'G') &&
-            (playerColorChoice != 'R') && (playerColorChoice != 'Y'));
-
-    topDiscardColor = playerColorChoice;
+        
+        discardPile.Top()->Info_SetColor(color);
+    } while(isFail() == true);
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: If the player has no other card in their hand they can play:
 //                   1) Player chooses the color of the top card on the
 //                      discard pile.
@@ -445,20 +425,16 @@ void Game::WildCard() {
 //                   3) Next player loses their turn.
 void Game::Wild4Card() {
     
+    //Player Chooses Top Color of Discard Pile
     WildCard();
-
-    for(int i = 0; i < 2; i++)
-    {
-        Draw2Card(playerCardValue, playerCardColor, deckValues, deckColors       ,
-                  player1Hand, player1Colors, player2Hand, player2Colors         ,
-                  player3Hand, player3Colors, player4Hand, player4Colors         ,
-                  topDiscardValue, topDiscardColor, playerNum, numPlayers, IsReverse, currTurn);
+    
+    //Then, the Next Player Must Draw 4 Cards
+    for(unsigned int i = 0; i < 2; i++) {
+        Draw2Card();
     }
-
-    SkipCard(playerCardValue, playerCardColor, deckValues, deckColors       ,
-             player1Hand, player1Colors, player2Hand, player2Colors         ,
-             player3Hand, player3Colors, player4Hand, player4Colors         ,
-             topDiscardValue, topDiscardColor, playerNum, numPlayers, IsReverse, currTurn);
+    
+    //Then, the Next Player's Turn is Skipped
+    SkipCard();
 }
 
 //!TODO: FINISH FUNCTION
@@ -472,17 +448,15 @@ void BlankCard() {
     do {
         do {
             cout << "Would you like to match the \'value\' or \'color\' of the top card on the discard pile?\n";
-            DisplayTopDiscardCard(topDiscardValue, topDiscardColor);
-            cin >> playerDecision;
-            cout << endl;
-            if((playerDecision != "value") && (playerDecision != "color"))
-            {
+            discardPile.Top()->PrintCard();
+            std::cin >> playerDecision;
+            std::cout << std::endl; //! <----------------------- BOOKMARK; CONTINUE HERE!!!
+            if((playerDecision != "value") && (playerDecision != "color")) {
                 cout << "Please choose either the \'value\' or \'color\'.";
             }
         } while((playerDecision != "value") && (playerDecision != "color"));
 
-        switch(playerDecision == "value")
-        {
+        switch(playerDecision == "value") {
             case 0: // Choose the number
                 do {
                     cout << "Choose your card value. Enter a number between \'0\' and \'9\'. Enter \'-1\' to exit "
@@ -526,11 +500,8 @@ void BlankCard() {
                     }
                 } while((playerChoiceColor != 'B') && (playerChoiceColor != 'G') &&
                         (playerChoiceColor != 'R') && (playerChoiceColor != 'Y'));
-                cout << "Blank Player Color: " << playerChoiceColor << endl; // <--------------------------------- FIXME; REMOVE
                 break;
 
         }
     } while(DoesPlayerExit == true);
-    //cout << "Blank Discard Value: " << topDiscardValue << endl; // <--------------------------------------------- FIXME; REMOVE
-    //cout << "Blank Discard Color: " << topDiscardColor << endl; // <--------------------------------------------- FIXME; REMOVE
 }

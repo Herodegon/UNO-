@@ -1,5 +1,13 @@
 #include "Deck.h"
 
+Deck::~Deck() {
+    
+    for(size_t i = deck.size() - 1; i >= 0; i--) {
+        
+        delete deck.at(i);
+    }
+}
+
 void Deck::Build() {
 
     //Reset Deck

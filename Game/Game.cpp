@@ -210,8 +210,8 @@ void Game::GameState() {
     playerScores.at(currNum) += TallyHands();
 }
 
-// Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
-// or if they have 0 (they've won the round).
+//Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
+//or if they have 0 (they've won the round).
 bool Game::WinCheck() const {
     
     //Does Player Have UNO?
@@ -288,16 +288,15 @@ void Game::Draw(Hand &player, unsigned int numCards) {
     
     for(unsigned int i = 0; i < numCards; i++) {
         
-        if(deckPile.Size() != 0) {
-            player.Push_Back(deckPile.Top());
-            
-            deckPile.Pop_Back();
-        }
-        else {
+        if(deckPile.Size() == 0) {
             std::cout << "Reshuffling Deck...\n";
             deckPile = discardPile;
             deckPile.Shuffle();
         }
+        
+        player.Push_Back(deckPile.Top());
+            
+        deckPile.Pop_Back();
     }
 }
 
@@ -358,7 +357,14 @@ void Game::ReverseCard() {
 void Game::Draw2Card() {
     unsigned int playerDraw; //Number of Player That Draws 2 Cards
         
-    for(int i = 0; i < 2; i++) { //Draw 2 Cards
+    for(unsigned int i = 0; i < 2; i++) { //Draw 2 Cards
+        
+        if(deckPile.Size() == 0) {
+            std::cout << "Reshuffling Deck...";
+            deckPile = discardPile;
+            deckPile.Shuffle();
+        }
+        
         switch(isReverse) {
             //Player rotation is normal
             case false:
@@ -374,27 +380,44 @@ void Game::Draw2Card() {
     }
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: Let's the player choose the color of the top card on the discard pile.
 void Game::WildCard() {
     
     char playerColorChoice;
+    
     do {
-        cout << "What color would you like the discard pile to be? Enter \'B\', \'G\', \'R\', or \'Y\'.\n";
-        cin >> playerColorChoice;
-        cout << endl;
-        if((playerColorChoice != 'B') && (playerColorChoice != 'G') &&
-           (playerColorChoice != 'R') && (playerColorChoice != 'Y'))
-        {
-            cout << "Please enter a valid color.\n";
+        fail = false;
+        
+        //Player Input for Color
+        std::cout << "What color would you like the discard pile to be? Enter \'B\', \'G\', \'R\', or \'Y\'.\n";
+        std::cin >> playerColorChoice;
+        std::cout << std::endl;
+        
+        //Assign Color to Top of Discard Pile
+        unsigned int color;
+        switch(playerColorChoice) {
+            case 'B':
+                color = BLUE;
+            case 'G':
+                color = GREEN;
+                break;
+            case 'R':
+                color = RED;
+                break;
+            case 'Y':
+                color = YELLOW;
+                break;
+            default:
+                std::cout << "Please enter a color.\n" << std::endl;
+                std::cin.ignore();
+                break;
+                
         }
-    } while((playerColorChoice != 'B') && (playerColorChoice != 'G') &&
-            (playerColorChoice != 'R') && (playerColorChoice != 'Y'));
-
-    topDiscardColor = playerColorChoice;
+        
+        discardPile.Top()->Info_SetColor(color);
+    } while(isFail() == true);
 }
 
-//!TODO: FINISH FUNCTION
 //Card Function: If the player has no other card in their hand they can play:
 //                   1) Player chooses the color of the top card on the
 //                      discard pile.
@@ -402,20 +425,16 @@ void Game::WildCard() {
 //                   3) Next player loses their turn.
 void Game::Wild4Card() {
     
+    //Player Chooses Top Color of Discard Pile
     WildCard();
-
-    for(int i = 0; i < 2; i++)
-    {
-        Draw2Card(playerCardValue, playerCardColor, deckValues, deckColors       ,
-                  player1Hand, player1Colors, player2Hand, player2Colors         ,
-                  player3Hand, player3Colors, player4Hand, player4Colors         ,
-                  topDiscardValue, topDiscardColor, playerNum, numPlayers, IsReverse, currTurn);
+    
+    //Then, the Next Player Must Draw 4 Cards
+    for(unsigned int i = 0; i < 2; i++) {
+        Draw2Card();
     }
-
-    SkipCard(playerCardValue, playerCardColor, deckValues, deckColors       ,
-             player1Hand, player1Colors, player2Hand, player2Colors         ,
-             player3Hand, player3Colors, player4Hand, player4Colors         ,
-             topDiscardValue, topDiscardColor, playerNum, numPlayers, IsReverse, currTurn);
+    
+    //Then, the Next Player's Turn is Skipped
+    SkipCard();
 }
 
 //!TODO: FINISH FUNCTION
@@ -429,17 +448,15 @@ void BlankCard() {
     do {
         do {
             cout << "Would you like to match the \'value\' or \'color\' of the top card on the discard pile?\n";
-            DisplayTopDiscardCard(topDiscardValue, topDiscardColor);
-            cin >> playerDecision;
-            cout << endl;
-            if((playerDecision != "value") && (playerDecision != "color"))
-            {
+            discardPile.Top()->PrintCard();
+            std::cin >> playerDecision;
+            std::cout << std::endl; //! <----------------------- BOOKMARK; CONTINUE HERE!!!
+            if((playerDecision != "value") && (playerDecision != "color")) {
                 cout << "Please choose either the \'value\' or \'color\'.";
             }
         } while((playerDecision != "value") && (playerDecision != "color"));
 
-        switch(playerDecision == "value")
-        {
+        switch(playerDecision == "value") {
             case 0: // Choose the number
                 do {
                     cout << "Choose your card value. Enter a number between \'0\' and \'9\'. Enter \'-1\' to exit "
@@ -483,11 +500,8 @@ void BlankCard() {
                     }
                 } while((playerChoiceColor != 'B') && (playerChoiceColor != 'G') &&
                         (playerChoiceColor != 'R') && (playerChoiceColor != 'Y'));
-                cout << "Blank Player Color: " << playerChoiceColor << endl; // <--------------------------------- FIXME; REMOVE
                 break;
 
         }
     } while(DoesPlayerExit == true);
-    //cout << "Blank Discard Value: " << topDiscardValue << endl; // <--------------------------------------------- FIXME; REMOVE
-    //cout << "Blank Discard Color: " << topDiscardColor << endl; // <--------------------------------------------- FIXME; REMOVE
 }

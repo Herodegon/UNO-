@@ -6,6 +6,21 @@ Game::Game() {
     Intro();
 }
 
+/*!TODO: FIX DECONSTRUCTOR
+Game::~Game() {
+    
+    //Delete Decks
+    delete deckPile;
+    delete discardPile;
+    
+    //Delete Hands
+    for(unsigned int i = 0; i < playerHands.size(); i++) {
+        
+        delete playerHands.at(i);
+    }
+}
+*/
+
 void Game::Intro() {
     
     //Intro
@@ -269,13 +284,44 @@ unsigned int Game::TallyHands() {
 
 /*****************************************************/
 
-void Game::Draw(Hand *player, unsigned int numCards) {
+void Game::Draw(Hand &player, unsigned int numCards) {
     
     for(unsigned int i = 0; i < numCards; i++) {
-        player.push_back(deckPile.Top());
+        player.Push_Back(deckPile.Top());
         
         deckPile.Pop_Back();
     }
+}
+
+void Game::Play(Hand &player, unsigned int cardInHand) {
+    Cards *card = player.At(cardInHand);
+    
+    discardPile.Push_Back(card);
+    
+    switch(card->Info_GetType()) {
+        case SKIP:
+            SkipCard();
+            break;
+        case REVERSE:
+            ReverseCard();
+            break;
+        case DRAW2:
+            Draw2Card();
+            break;
+        case WILD:
+            WildCard();
+            break;
+        case WILD4:
+            Wild4Card();
+            break;
+        case BLANK:
+            BlankCard();
+            break;
+        default:
+            break;
+    }
+    
+    player.Pop(cardInHand);
 }
 
 //!TODO: FINISH FUNCTION

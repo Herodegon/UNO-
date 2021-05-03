@@ -12,6 +12,7 @@
 class Game {
     public:
         Game();
+        ~Game();
         
         //Runs Through 1 Round of UNO
         void GameState();
@@ -19,8 +20,8 @@ class Game {
         //Runs Through Player Turn
         void Turn();
         
-        void Draw(Hand *player, unsigned int numCards);
-        void Play(Cards*);
+        void Draw(Hand &player, unsigned int numCards);
+        void Play(Hand &player, unsigned int cardInHand);
         
         //Win State Check
         bool WinCheck() const;

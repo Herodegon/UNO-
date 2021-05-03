@@ -8,6 +8,7 @@
 class Deck {
     public:
         Deck();
+        ~Deck();
         
         //Operators
         void operator=(Deck deck2) {deck = deck2.deck;}

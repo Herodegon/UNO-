@@ -16,6 +16,8 @@ class Hand {
         unsigned int Size() const {return hand.size();}
         
         Cards* At(unsigned int i) const {return hand.at(i);}
+        Cards* First() const {return hand.front();}
+        Cards* Last() const {return hand.back();}
         
         //Hand Manipulators
         void Push_Back(Cards *card) {hand.push_back(card);}

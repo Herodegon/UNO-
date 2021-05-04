@@ -43,7 +43,7 @@ class Game {
         std::vector<Hand> playerHands; //Collection of All Player Hands
         
         //Info Per Turn
-        unsigned int currNum; //Current Player's Number
+        unsigned int currNum; //Integer Representing Current Player
         Hand* currPlayer;     //Current Player's Hand
         std::string currName; //Current Player's Name
         

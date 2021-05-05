@@ -6,20 +6,17 @@ Game::Game() {
     Intro();
 }
 
-/*!TODO: FIX DESTRUCTOR
 Game::~Game() {
     
-    //Delete Decks
-    delete deckPile;
-    delete discardPile;
+    std::cout << "Ending Game...\n";
+}
+
+void Game::Clear() const {
     
-    //Delete Hands
-    for(unsigned int i = size() - 1; i >= 0; i--) {
-        
-        delete playerHands.at(i);
+    for(unsigned int i = 0; i < 50; i++) {
+        std::cout << std::endl;
     }
 }
-*/
 
 void Game::Intro() {
     
@@ -28,30 +25,34 @@ void Game::Intro() {
               << std::endl;
 
     //Ask If They Would Like A Tutorial
+    char tutorialChoice;
     do {
-        std::cout << "Would you like to play the tutorial? Enter \'y\' or \'n\'.\n";
-        std::cin.get();
+        fail = false;
         
-        if((std::cin.get() != 'y') && (std::cin.get() != 'n'))
-        {
-            std::cout << "Please enter \'y\' or \'n\'.\n"
+        std::cout << "Would you like to play the tutorial? Enter \'Y\' or \'N\'.\n";
+        std::cin >> tutorialChoice;
+        
+        if((tutorialChoice != 'Y') && (tutorialChoice != 'N')) {
+            std::cout << "Please enter \'Y\' or \'N\'.\n"
                       << std::endl;
+            fail = true;
         }
-    } while((std::cin.get() != 'y') && (std::cin.get() != 'n'));
+    } while(isFail() == true);
 
-    //Run the tutorial if they respond with 'y'
-    if(std::cin.get() == 'y') {
+    //If 'Y'; Run Tutorial
+    if(tutorialChoice == true) {
         Tutorial();
     }
     
-    std::cin.clear();
+    std::cout << std::endl;
 
-    //# of players
+    //Declare Number of Players
     do {
         std::cout << "How many players are there? "
                   << "Enter a number between \'2\' and \'4\'.\n";
         
         std::cin >> numPlayers;
+        
         //Player Number Check (Must be number between 2 and 4)
         if(((numPlayers < 2) || (numPlayers > 4)) || (std::cin.fail())) { 
             std::cout << std::endl << "Please enter a number between \'2\' and \'4\'.\n";
@@ -60,12 +61,16 @@ void Game::Intro() {
                 std::cin.clear();
                 std::cin.ignore();
             }
+            
+            fail = true;
         }
-    } while((numPlayers < 2) || (numPlayers > 4));
+    } while(isFail() == true);
     std::cout << std::endl;
 
-    //Player names
+    //Resize Player Elements
     playerNames.resize(numPlayers);
+    playerHands.resize(numPlayers);
+    
     for(size_t i = 0; i < numPlayers; i++) {
         do {
             std::cout << "Please enter Player " << i + 1 << "\'s name.\n";
@@ -75,8 +80,9 @@ void Game::Intro() {
             //Character Length Check (Name must be less than 15 chars)
             if(playerNames.at(i).size() > 15) {
                 std::cout << "Please use a shorter name (less than 15 characters).\n";
+                fail = true;
             }
-        } while(playerNames.at(i).size() > 15);
+        } while(isFail() == true);
     }
     std::cout << std::endl;
 
@@ -92,6 +98,8 @@ void Game::Intro() {
     
     //Set Player Scores
     playerScores.resize(0, numPlayers);
+    
+    Clear();
 }
 
 ///Runs the player through an interactive tutorial for playing UNO
@@ -126,12 +134,17 @@ void Game::Tutorial() const {
 void Game::GameState() {
     
     //(Re)Build Deck and Shuffle
+    std::cout << "Building Deck...\n" << std::endl;
     deckPile.Build();
+    
+    std::cout << "Shuffling Deck...\n" << std::endl;
     deckPile.Shuffle();
     
     //Create Discard Pile
+    std::cout << "Setting Top Card on Discard Pile...\n" << std::endl;
     discardPile.Push_Back(deckPile.Top());
 
+    std::cout << "Pushing Top Card to Pile...\n" << std::endl;
     deckPile.Pop_Back();
 
     //Check Top Discard for Special Cases
@@ -139,13 +152,13 @@ void Game::GameState() {
         
         //If the card is Blank, choose a random number and color
         case BLANK:
-            discardPile.At(0)->Info_SetNumVal(rand() % 10);
-            //Continue to Next Case
+            discardPile.Top()->Info_SetNumVal(rand() % 10);
+            ///Continue to Next Case
         
         //If the card is Wild/Wild 'Draw 4', choose a random color
         case WILD:  
         case WILD4:
-            discardPile.At(0)->Info_SetColor(rand() % NUM_COLORS);
+            discardPile.Top()->Info_SetColor(rand() % NUM_COLORS);
             break;
             
         //Else, nothing occurs
@@ -204,6 +217,8 @@ void Game::GameState() {
                   << "Press \'Enter\' to continue...\n";
         std::cin.get();
         std::cin.ignore();
+        
+        Clear();
     } while(WinCheck() == false);
     
     //Calculate Winner's Score
@@ -302,6 +317,8 @@ void Game::Turn() {
                                   
                         std::cin >> cardChoice;
                         std::cout << std::endl;
+                        
+                        cardChoice++;
 
                         //If choice breaks input or exceeds hand,
                         //reobtain player choice

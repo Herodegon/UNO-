@@ -12,6 +12,9 @@ class Game {
         Game();
         ~Game();
         
+        //Screen Clear Function
+        void Clear() const;
+        
         //Runs Through 1 Round of UNO
         void GameState();
         

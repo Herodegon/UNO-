@@ -17,4 +17,4 @@ Cards.o: Cards/Cards.cpp
 	g++ -Wall -c Cards/Cards.cpp -o Cards.o -std=c++11
 
 clean:
-	rm *.o uno
+	rm *.o *.gch Cards/*.o Cards/*.gch Game/*.o Game/*.gch

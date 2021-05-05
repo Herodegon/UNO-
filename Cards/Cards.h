@@ -28,7 +28,7 @@ struct Info {
 
 class Cards {
     public:
-        virtual ~Cards() = 0;
+        virtual ~Cards() {};
         
         //Accessors for Card Info
         int Info_GetNumVal() const {return cardInfo.numValue;}
@@ -64,7 +64,7 @@ class Number : public Cards {
             cardInfo.numValue = num;
             cardInfo.color = static_cast<CardColor>(color);
         }
-        ~Number();
+        ~Number() {};
         
         std::string Print_CardMiddle() const;
         
@@ -78,7 +78,7 @@ class Skip : public Cards {
         Skip(unsigned int color) {
             cardInfo.color = static_cast<CardColor>(color);
         }
-        ~Skip();
+        ~Skip() {};
         
         std::string Print_CardMiddle() const;
         
@@ -92,7 +92,7 @@ class Reverse : public Cards {
         Reverse(unsigned int color) {
             cardInfo.color = static_cast<CardColor>(color);
         }
-        ~Reverse();
+        ~Reverse() {};
         
         std::string Print_CardMiddle() const;
         
@@ -106,7 +106,7 @@ class Draw2 : public Cards {
         Draw2(unsigned int color) {
             cardInfo.color = static_cast<CardColor>(color);
         }
-        ~Draw2();
+        ~Draw2() {};
         
         std::string Print_CardMiddle() const;
         
@@ -117,7 +117,7 @@ class Draw2 : public Cards {
 
 class Wild : public Cards {
     public:
-        ~Wild();
+        ~Wild() {};
     
         std::string Print_CardMiddle() const;
         
@@ -128,7 +128,7 @@ class Wild : public Cards {
 
 class Wild4 : public Cards {
     public:
-        ~Wild4();
+        ~Wild4() {};
     
         std::string Print_CardMiddle() const;
         
@@ -139,7 +139,7 @@ class Wild4 : public Cards {
 
 class Blank : public Cards {
     public:
-        ~Blank();
+        ~Blank() {};
     
         std::string Print_CardMiddle() const;
         

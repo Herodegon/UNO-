@@ -1,20 +1,20 @@
-uno: main.o
-	g++ main.o -o uno -Wall -std=c++11
+uno: main.o Game/Game.o Cards/Deck.o Cards/Hand.o Cards/Cards.o
+	g++ main.o Game/Game.o Cards/Deck.o Cards/Hand.o Cards/Cards.o -o uno -std=c++11
 
-main.o: main.cpp Game.h
-	g++ -c main.cpp -o main.o
+main.o: main.cpp Game/Game.h
+	g++ -Wall -c main.cpp -o main.o -std=c++11
 
-Game.o: Game.cpp Cards/Deck.h Cards/Hand.h
-	g++ -c Game.cpp -o Game.o
+Game.o: Game/Game.cpp Cards/Deck.h Cards/Hand.h
+	g++ -Wall -c Game/Game.cpp -o Game.o -std=c++11
 
-Cards/Deck.o: Cards/Deck.cpp Cards/Cards.h
-	g++ -c Cards/Deck.cpp -o Deck.o
+Deck.o: Cards/Deck.cpp Cards/Cards.h
+	g++ -Wall -c Cards/Deck.cpp -o Deck.o -std=c++11
 
-Cards/Hand.o: Cards/Hand.cpp Cards/Cards.h
-	g++ -c Cards/Hand.cpp -o Hand.o 
+Hand.o: Cards/Hand.cpp Cards/Cards.h
+	g++ -Wall -c Cards/Hand.cpp -o Hand.o -std=c++11 
 
-Cards/Cards.o: Cards/Cards.cpp
-	g++ -c Cards/Cards.cpp -o Cards.o
+Cards.o: Cards/Cards.cpp
+	g++ -Wall -c Cards/Cards.cpp -o Cards.o -std=c++11
 
 clean:
-	$(RM) $(uno)
+	rm *.o uno

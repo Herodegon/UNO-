@@ -1,10 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
 
 #include "../Cards/Deck.h"
 #include "../Cards/Hand.h"
@@ -26,7 +24,11 @@ class Game {
         //Win State Check
         bool WinCheck() const;
         
+        //Score Announcement
+        void PrintScores() ;
+        
         //Error Test
+        bool canPlay(Cards *card) const;
         bool isFail() const {return fail == true;}
     
     private:

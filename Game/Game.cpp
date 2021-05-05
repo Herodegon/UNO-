@@ -6,7 +6,7 @@ Game::Game() {
     Intro();
 }
 
-/*!TODO: FIX DECONSTRUCTOR
+/*!TODO: FIX DESTRUCTOR
 Game::~Game() {
     
     //Delete Decks
@@ -14,7 +14,7 @@ Game::~Game() {
     delete discardPile;
     
     //Delete Hands
-    for(unsigned int i = 0; i < playerHands.size(); i++) {
+    for(unsigned int i = size() - 1; i >= 0; i--) {
         
         delete playerHands.at(i);
     }
@@ -213,7 +213,6 @@ void Game::GameState() {
 ///Plays out the current player's turn (drawing, choosing a card from their hand, and checking the
 ///remaining cards in their hand).
 void Game::Turn() {
-    Hand *player = &playerHands.at(currNum);
     
     // Displays player hand at the start of turn
     playerHands.at(currNum).PrintHand();
@@ -224,7 +223,7 @@ void Game::Turn() {
     std::string playerChoice;
     bool exitState;
     do {
-        exitState = false;
+        exitState = true;
         
         do {
             fail = false;
@@ -241,9 +240,8 @@ void Game::Turn() {
             }
         } while(isFail() == true);
 
-        bool IsPlayCard = (playerChoice == "play"); // Checks if player wants to play a card in their hand
-        bool IsSpecialCard;
-        switch(IsPlayCard) {
+        bool isPlay = (playerChoice == "play"); //Player's Decision
+        switch(isPlay) {
             
             ///Draw a Card
             case 0:
@@ -260,211 +258,84 @@ void Game::Turn() {
                     
                     if((clarify != 'Y') && (clarify != 'N')) {
                         std::cout << "Please enter either \'Y\' or \'N\'.\n"
-                             << std::endl;
+                                  << std::endl;
                         fail = true;
                     }
                 } while(isFail() == true);
 
                 //If No; Return To "Draw or Play"
                 if(clarify == 'n') {
-                    exitState = true;
                     break;
                 }
 
                 //If Yes; Draw Card
-                Draw(*player, 1);
+                Draw(*currPlayer, 1);
 
-                // Display new card
+                //Display New Card
                 std::cout << "Card Drawn\n";
-                player->Last()->PrintCard();
-
-                // Card top
-                cout << "┌   ┐" << endl;
-                // Card middle
-                switch(playerHand.back())
-                {
-                    case 10:
-                        cout << "|S " << playerColors.back() << "|";
-                        break;
-                    case 11:
-                        cout << "|R " << playerColors.back() << "|";
-                        break;
-                    case 12:
-                        cout << "|D " << playerColors.back() << "|";
-                        break;
-                    case 13:
-                        cout << "| W |";
-                        break;
-                    case 14:
-                        cout << "|W 4|";
-                        break;
-                    case 15:
-                        cout << "| B |";
-                        break;
-                    default:
-                        cout << "|" << playerHand.back() << " " << playerColors.back() << "|";
-                        break;
-                }
-                cout << endl;
-                //Card bottom
-                cout << "└   ┘" << endl << endl;
+                currPlayer->Last()->PrintCard();
 
                 // Check to see if new card can be played
-                if((playerHand.back() != topDiscardValue) && (playerColors.back() != topDiscardColor))
-                {
-                    break; // New card can't be played
+                if(canPlay(currPlayer->Last()) == true) {
+                    std::cout << "Your new card can be played.\n"
+                              << std::endl;
+                    Play(*currPlayer, currPlayer->Back());
+                    exitState = false;
                 }
-
-                // Check to see if new card is special
-                IsSpecialCard = ((playerHand.back() == 10) ||
-                                 (playerHand.back() == 11) ||
-                                 (playerHand.back() == 12) ||
-                                 (playerHand.back() == 13) ||
-                                 (playerHand.back() == 14) ||
-                                 (playerHand.back() == 15)   );
-                if(IsSpecialCard == true)
-                {
-                    if(SpecialCheck(playerHand, playerColors, topDiscardValue, topDiscardColor, playerHand.size() - 1) == false)
-                    {
-                        break;
-                    }
+                else {
+                    std::cout << "Card can't be played.\n";
                 }
-
-                // New card can be played = Play new card
-                cout << "Your new card can be played.\n"
-                     << endl;
-
-                switch(IsSpecialCard)
-                {
-                    case true:
-                        CardPlayed(playerHand.back(), playerColors.back(), deckValues, deckColors ,
-                                   player1Hand, player1Colors, player2Hand, player2Colors         ,
-                                   player3Hand, player3Colors, player4Hand, player4Colors         ,
-                                   topDiscardValue, topDiscardColor, playerNum, numPlayers, IsReverse, currTurn);
-                        break;
-
-                    case false:
-                        topDiscardValue = playerHand.back();
-                        topDiscardColor = playerColors.back();
-                        break;
-                }
-                playerHand.pop_back();
-                playerColors.pop_back();
                 break;
 
-            case 1: // Play a Card
-                int playerCardChoice = -1; // Card from 1 to their hand size that player has chosen to play
-                bool FailCheck = false;    // Flag to see if card chosen is inside hand, or is correct var type
+            ///Play a Card
+            case 1:
+                unsigned int cardChoice = -1; //Card from 1 to their hand size that player has chosen to play
 
                 do {
                     do {
-                        // Choose a card between 1 and the maximum size of the hand
-                        cout << "What card would you like to play? "
-                             << "Enter a number between \'1\' and \'" << playerHand.size() << "\'.\n";
-                        cout << "If you would like to go back and choose another option, enter \'0\'.\n";
-                        cin >> playerCardChoice;
-                        cout << endl;
+                        fail = false;
+                        
+                        //Choose a card between 1 and the maximum size of the hand
+                        std::cout << "What card would you like to play? "
+                                  << "Enter a number between \'1\' and \'" << currPlayer->Size() << "\'.\n"
+                                  << "If you would like to go back and choose another option, enter \'0\'.\n";
+                                  
+                        std::cin >> cardChoice;
+                        std::cout << std::endl;
 
-                        // If the player's choice breaks the boundaries of their hand, or is the wrong input type,
-                        // make them choose another card from their hand.
-                        if(((playerCardChoice < 0) || (playerCardChoice > playerHand.size())) || (cin.fail()))
-                        {
-                            cout << "Please choose a card from your hand (with \'1\' being the first card and \'"
-                                 << playerHand.size() << "\' being the last card).\n"
-                                 << endl;
+                        //If choice breaks input or exceeds hand,
+                        //reobtain player choice
+                        if(((cardChoice < 0) || (cardChoice > currPlayer->Size())) || (std::cin.fail())) {
+                            std::cout << "Please choose a card from your hand (with \'1\' being the first card and \'"
+                                      << currPlayer->Size() << "\' being the last card).\n"
+                                      << std::endl;
 
-                            if(cin.fail()) // If the input was the wrong type i.e., string
-                            {
-                                cin.clear();
-                                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            if(std::cin.fail()) { // If the input was the wrong type i.e., string
+                                std::cin.clear();
+                                std::cin.ignore();
                             }
-                            FailCheck = true;
+                            
+                            fail = true;
                         }
-                        cout << "Test 1" << endl; // <--------------------------------------------------------- FIXME;REMOVE
-                    } while(FailCheck == true);
-
-                    if(FailCheck == false) // If the player doesn't fail the boundary check, proceed with rest of the checks
-                    {
-                        // If the player wants to exit their decision, return to decision options
-                        if(playerCardChoice == 0)
-                        {
-                            cout << "Test 2" << endl; // <-------------------------------------------------- FIXME;REMOVE
-                            DoesPlayerExit = true;
+                        
+                        //If card choice is '0', return to "Draw or Play"
+                        if(cardChoice == 0) {
                             break;
                         }
-
-                        /* TEST; IsSpecialCard Value REMOVE
-                        playerHand.push_back(13);
-                        playerColors.push_back('N');
-
-                        playerCardChoice = playerHand.size();
-                        */
-
-                        IsSpecialCard = ((playerHand.at(playerCardChoice - 1) == 10) ||
-                                         (playerHand.at(playerCardChoice - 1) == 11) ||
-                                         (playerHand.at(playerCardChoice - 1) == 12) ||
-                                         (playerHand.at(playerCardChoice - 1) == 13) ||
-                                         (playerHand.at(playerCardChoice - 1) == 14) ||
-                                         (playerHand.at(playerCardChoice - 1) == 15)   );
-
-                        // If their card is special, continue to the "Special Card" section
-                        if(IsSpecialCard == true)
-                        {
-                            break;
-                        }
-
-                        // If the top card on the discard pile is Wild or Wild 'Draw 4', continue to "Card Played" section
-                        if((topDiscardValue == 13) || (topDiscardValue == 14))
-                        {
-                            break;
-                        }
-
-                        // If their card doesn't have the same number or color as the top card on the discard pile,
-                        // make them choose another card
-                        if((playerHand.at(playerCardChoice - 1) != topDiscardValue)   &&
-                           (playerColors.at(playerCardChoice - 1) != topDiscardColor)   )
-                        {
-                            cout << "Please choose a card that matches the color or number of the top card on the "
-                                 << "discard pile.\n"
-                                 << endl;
-                        }
-                    }
-                } while(((playerCardChoice < 0) || (playerCardChoice > playerHand.size())) ||
-                        ((playerHand.at(playerCardChoice - 1) != topDiscardValue)    &&
-                         (playerColors.at(playerCardChoice - 1) != topDiscardColor))       ||
-                        (FailCheck == true)                                                  );
-
-                // Check if special card chosen can be played
-                if(IsSpecialCard == true)
-                {
-                    // If card cannot be played, then return to decision options
-                    if(SpecialCheck(playerHand, playerColors, topDiscardValue, topDiscardColor, playerCardChoice - 1) == false)
-                    {
-                        DoesPlayerExit = true;
+                    } while(canPlay(currPlayer->At(cardChoice)));
+                    
+                    //Continue to Exit
+                    if(exitState == true) {
                         break;
                     }
-                }
-
-                // If player wants to return to the decision options, they do not run the following code
-                if(DoesPlayerExit != true)
-                {
-                    // Otherwise, card is played
-                    CardPlayed(playerHand.at(playerCardChoice - 1), playerColors.at(playerCardChoice - 1), deckValues, deckColors,
-                               player1Hand, player1Colors, player2Hand, player2Colors                                            ,
-                               player3Hand, player3Colors, player4Hand, player4Colors                                            ,
-                               topDiscardValue, topDiscardColor, playerNum, numPlayers, IsReverse, currTurn                       );
-
-                    // Card played is erased from player's hand
-                    playerHand.erase(playerHand.begin() + (playerCardChoice - 1));
-                    playerColors.erase(playerColors.begin() + (playerCardChoice - 1));
-                }
+                    
+                    //If Not Exit; Play Card and End Turn
+                    Play(*currPlayer, cardChoice);
+                    exitState = false;
+                } while((canPlay(currPlayer->At(cardChoice)) == true) && (isFail() == false));
                 break;
         }
-
-    } while(DoesPlayerExit == true);
-
-
-
+    } while(exitState == true);
 }
 
 ///Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
@@ -537,6 +408,39 @@ unsigned int Game::TallyHands() {
     }
 
     return sum;
+}
+
+void Game::PrintScores() {
+    
+    std::cout << "=== Final Scores ===\n"
+              << std::endl;
+    
+    unsigned int winnerNum;      
+    for(unsigned int i = 0; i < numPlayers; i++) {
+        unsigned int score = 0;
+        unsigned int playerNum;
+        
+        for(unsigned int k = 0; k < numPlayers; k++) {
+            
+            if(score < playerScores.at(k)) {
+                score = playerScores.at(k);
+                playerNum = k;
+            }
+        }
+        std::cout << i + 1 << " (" << playerNames.at(playerNum) << ") | "
+                  << score << "Points\n";
+        
+        if(i == 0) {
+            winnerNum = playerNum;
+        }
+        
+        playerScores.at(playerNum) = 0;
+    }
+    std::cout << std::endl;
+    
+    std::cout << "Congratulations, " << playerNames.at(winnerNum) << "! "
+              << "You won!\n"
+              << std::endl;
 }
 
 /*****************************************************/
@@ -746,4 +650,22 @@ void Game::BlankCard() {
     
     discardPile.Top()->Info_SetNumVal(blankValue);
     discardPile.Top()->Info_SetColor(blankColor);
+}
+
+bool Game::canPlay(Cards* card) const {
+    Cards *topCard = discardPile.Top();
+    bool hasNumber = ((card->Info_GetType() == NUMBER) ||
+                      (card->Info_GetType() == BLANK));
+    
+    if((hasNumber) && (card->Info_GetNumVal() == card->Info_GetNumVal())) {
+        return true;
+    }
+    if(card->Info_GetType() == topCard->Info_GetType()) {
+        return true;
+    }
+    if(card->Info_GetColor() == card->Info_GetColor()) {
+        return true;
+    }
+    
+    return false;
 }

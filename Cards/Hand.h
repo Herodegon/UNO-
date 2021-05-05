@@ -14,6 +14,8 @@ class Hand {
         
         //Hand Accessors
         unsigned int Size() const {return hand.size();}
+        unsigned int Front() const {return 0;}
+        unsigned int Back() const {return hand.size() - 1;}
         
         Cards* At(unsigned int i) const {return hand.at(i);}
         Cards* First() const {return hand.front();}
@@ -22,6 +24,7 @@ class Hand {
         //Hand Manipulators
         void Push_Back(Cards *card) {hand.push_back(card);}
         void Pop(unsigned int i) {hand.erase(hand.begin()+i);}
+        void Pop_Back() {hand.pop_back();}
         
     private:
         std::vector<Cards*> hand;

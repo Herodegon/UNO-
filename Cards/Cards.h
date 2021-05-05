@@ -12,8 +12,7 @@ enum CardType {
     DRAW2 = 12, 
     WILD = 13, 
     WILD4 = 14, 
-    BLANK = 15, 
-    NUM_TYPES
+    BLANK = 15
 };
 
 enum CardColor {BLUE, GREEN, RED, YELLOW, NUM_COLORS, NOT_SPECIFIED};
@@ -62,8 +61,8 @@ class Cards {
 class Number : public Cards {
     public:
         Number(unsigned int num, unsigned int color) {
-            cardInfo.numValue = num;
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetNumVal(num);
+            Info_SetColor(color);
         }
         ~Number() {};
         
@@ -77,7 +76,8 @@ class Number : public Cards {
 class Skip : public Cards {
     public:
         Skip(unsigned int color) {
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetType(SKIP);
+            Info_SetColor(color);
         }
         ~Skip() {};
         
@@ -91,7 +91,8 @@ class Skip : public Cards {
 class Reverse : public Cards {
     public:
         Reverse(unsigned int color) {
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetType(REVERSE);
+            Info_SetColor(color);
         }
         ~Reverse() {};
         
@@ -105,7 +106,8 @@ class Reverse : public Cards {
 class Draw2 : public Cards {
     public:
         Draw2(unsigned int color) {
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetType(DRAW2);
+            Info_SetColor(color);
         }
         ~Draw2() {};
         
@@ -118,6 +120,9 @@ class Draw2 : public Cards {
 
 class Wild : public Cards {
     public:
+        Wild() {
+            Info_SetType(WILD); 
+        }
         ~Wild() {};
     
         std::string Print_CardMiddle() const;
@@ -129,6 +134,9 @@ class Wild : public Cards {
 
 class Wild4 : public Cards {
     public:
+        Wild4() {
+            Info_SetType(WILD4);    
+        }
         ~Wild4() {};
     
         std::string Print_CardMiddle() const;
@@ -140,6 +148,9 @@ class Wild4 : public Cards {
 
 class Blank : public Cards {
     public:
+        Blank() {
+            Info_SetType(BLANK);
+        }
         ~Blank() {};
     
         std::string Print_CardMiddle() const;

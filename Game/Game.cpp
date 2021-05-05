@@ -162,13 +162,16 @@ void Game::GameState() {
     //Check Top Discard for Special Cases
     switch(discardPile.Top()->Info_GetType()) {
         
+        case BLANK:
+            discardPile.Top()->Info_SetNumVal(rand() % 10);
+            ///Continue to next case
+        
         case WILD:  
         case WILD4:
-        case BLANK:
             discardPile.Top()->Info_SetColor(rand() % NUM_COLORS);
             break;
             
-        //Else, nothing occurs
+        //If Not Wild, Wild4, Blank; Do Nothing
         default:
             break;
     }
@@ -360,6 +363,8 @@ void Game::Turn() {
                             std::cout << "Please choose a card of matching "
                                       << "type, number, or color.\n"
                                       << std::endl;
+                            std::cout << "Type: " << currPlayer->At(cardChoice-1)->Info_GetType() ///<-------- FIXME; REMOVE
+                                      << std::endl;                                               ///<-------- FIXME; REMOVE
                         }
                         //Else, player can play card
                         else {
@@ -590,7 +595,6 @@ void Game::Draw2Card() {
 
 ///Card Function: Let's the player choose the color of the top card on the discard pile.
 void Game::WildCard() {
-    
     char playerColorChoice;
     
     do {
@@ -649,8 +653,8 @@ void Game::Wild4Card() {
 ///Card Function: Allows the player to choose the number value and color of the top card on the discard pile.
 void Game::BlankCard() {
     Cards *topCard = discardPile.Top();
-    unsigned int blankValue;
-    unsigned int blankColor;
+    int blankValue;
+    CardColor blankColor;
     
     bool sameNum = false;
     
@@ -666,7 +670,7 @@ void Game::BlankCard() {
             std::cout << "Please enter a valid number.\n";
             fail = true;
         }
-        else if(blankValue == static_cast<unsigned int>(topCard->Info_GetNumVal())) {
+        else if(blankValue == topCard->Info_GetNumVal()) {
             sameNum = true;
         }
     } while(isFail() == true);
@@ -675,13 +679,13 @@ void Game::BlankCard() {
     
     //If Card Num is Not Same; Make Card Color Equal to Discard Color
     if(sameNum != true) {
-        playerColor = topCard->Info_GetColor();
+        blankColor = topCard->Info_GetColor();
     }
     else {
         do {
             fail = false;
                         
-            std::cout << "Choose your card color. Enter \'B\', \'G\', "
+            std::cout << "Choose your card's color. Enter \'B\', \'G\', "
                       << "\'R\', or \'Y\'.\n";
                              
             std::cin >> playerColor;

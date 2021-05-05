@@ -73,7 +73,7 @@ std::string Wild::Print_CardMiddle() const {
         str << "|" << " W " << "| ";
     }
     else {
-        str << "| " << Info_GetColor() << " | ";
+        str << "| " << GetColor() << " | ";
     }
     
     return str.str();
@@ -88,7 +88,7 @@ std::string Wild4::Print_CardMiddle() const {
         str << "|" << "W" << " " << "4" << "| ";
     }
     else {
-        str << "| " << Info_GetColor() << " | ";
+        str << "| " << GetColor() << " | ";
     }
     
     return str.str();
@@ -103,7 +103,7 @@ std::string Blank::Print_CardMiddle() const {
         str << "|" << " B " << "| ";
     }
     else {
-        str << "|" << Info_GetNumVal() << " " << Info_GetColor() << "| ";
+        str << "|" << Info_GetNumVal() << " " << GetColor() << "| ";
     }
     
     return str.str();

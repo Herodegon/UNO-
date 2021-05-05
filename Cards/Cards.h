@@ -2,6 +2,7 @@
 #define CARDS_H
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 enum CardType {
@@ -42,9 +43,9 @@ class Cards {
         //Print Card in ASCII Characters
         void PrintCard();
         
-        std::string Print_CardTop()    {return ".---. \n";}
+        std::string Print_CardTop()    {return ".---. ";}
         virtual std::string Print_CardMiddle() const = 0;
-        std::string Print_CardBottom() {return "'---' \n";}
+        std::string Print_CardBottom() {return "'---' ";}
     
     protected:
     

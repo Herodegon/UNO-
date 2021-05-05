@@ -1,5 +1,3 @@
-#include <sstream>
-
 #include "Cards.h"
 
 char Cards::GetColor() const {
@@ -21,9 +19,9 @@ char Cards::GetColor() const {
 
 void Cards::PrintCard() {
     
-    std::cout << Print_CardTop()
-              << Print_CardMiddle()
-              << Print_CardBottom();
+    std::cout << Print_CardTop() << std::endl
+              << Print_CardMiddle() << std::endl
+              << Print_CardBottom() << std::endl;
 }
 
 /*****************************************************/
@@ -31,7 +29,7 @@ void Cards::PrintCard() {
 std::string Number::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << cardInfo.numValue << " " << GetColor() << "| \n";
+    str << "|" << cardInfo.numValue << " " << GetColor() << "| ";
     
     return str.str();
 }
@@ -41,7 +39,7 @@ std::string Number::Print_CardMiddle() const {
 std::string Skip::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << 'S' << " " << GetColor() << "| \n";
+    str << "|" << 'S' << " " << GetColor() << "| ";
     
     return str.str();
 }
@@ -51,7 +49,7 @@ std::string Skip::Print_CardMiddle() const {
 std::string Reverse::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << 'R' << " " << GetColor() << "| \n";
+    str << "|" << 'R' << " " << GetColor() << "| ";
     
     return str.str();
 }
@@ -61,7 +59,7 @@ std::string Reverse::Print_CardMiddle() const {
 std::string Draw2::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << 'D' << " " << GetColor() << "| \n";
+    str << "|" << 'D' << " " << GetColor() << "| ";
     
     return str.str();
 }
@@ -71,7 +69,12 @@ std::string Draw2::Print_CardMiddle() const {
 std::string Wild::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << " W " << "| \n";
+    if(Info_GetColor() == NOT_SPECIFIED) {
+        str << "|" << " W " << "| ";
+    }
+    else {
+        str << "| " << Info_GetColor() << " | ";
+    }
     
     return str.str();
 }
@@ -81,7 +84,12 @@ std::string Wild::Print_CardMiddle() const {
 std::string Wild4::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << "W" << " " << "4" << "| \n";
+    if(Info_GetColor() == NOT_SPECIFIED) {
+        str << "|" << "W" << " " << "4" << "| ";
+    }
+    else {
+        str << "| " << Info_GetColor() << " | ";
+    }
     
     return str.str();
 }
@@ -91,7 +99,12 @@ std::string Wild4::Print_CardMiddle() const {
 std::string Blank::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << " B " << "| \n";
+    if(Info_GetColor() == NOT_SPECIFIED) {
+        str << "|" << " B " << "| ";
+    }
+    else {
+        str << "|" << Info_GetNumVal() << " " << Info_GetColor() << "| ";
+    }
     
     return str.str();
 }

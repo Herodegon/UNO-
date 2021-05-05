@@ -9,38 +9,42 @@ Hand::~Hand() {
 }
 
 void Hand::PrintHand() const {
+    std::ostringstream hnd; //Stringstream for Player's Hand
     
     //Card Top
     for(size_t i = 0; i < hand.size(); i++) {
         Cards *card = hand.at(i);
                 
-        card->Print_CardTop();
+        hnd << card->Print_CardTop();
     }
+    hnd << std::endl;
             
     //Card Middle
     for(size_t i = 0; i < hand.size(); i++) {
         Cards *card = hand.at(i);
                 
-        card->Print_CardMiddle();
+        hnd << card->Print_CardMiddle();
     }
-    std::cout << std::endl;
+    hnd << std::endl;
             
     //Card Bottom
     for(size_t i = 0; i < hand.size(); i++) {
         Cards *card = hand.at(i);
                 
-        card->Print_CardBottom();
+        hnd << card->Print_CardBottom();
     }
-    std::cout << std::endl;
+    hnd << std::endl;
             
     //Card Number
     for(size_t i = 0; i < hand.size(); i++) {
                 
-        std::cout << "  " << i+1 << "  ";
+        hnd << "  " << i+1 << "  ";
                 
         if(i != hand.size() - 1) {
-            std::cout << ",";
+            hnd << ",";
         }
     }
-    std::cout << std::endl;
+    hnd << std::endl;
+    
+    std::cout << hnd.str() << std::endl;
 }

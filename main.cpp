@@ -1,6 +1,10 @@
+#include <cstdlib>
+#include <ctime>
+
 #include "Game/Game.h"
 
 int main() {
+    srand(time(NULL));
     Game uno;
     
     char playerInput = 'N';

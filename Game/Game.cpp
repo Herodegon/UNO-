@@ -99,9 +99,7 @@ void Game::Intro() {
              John goes first, George goes second
     */
     
-    //Set Player Scores
-    playerScores.resize(0, numPlayers);
-    
+    //Clear Terminal
     Clear();
 }
 
@@ -187,6 +185,8 @@ void Game::GameState() {
             Draw(playerHands.at(1), 7);
             Draw(playerHands.at(0), 7);
     }
+    
+    playerHands.at(0).SetDebugHand(); ///<---------------------------------------------- FIXME; REMOVE
 
     //Play Turns Until One Player Has No Cards Remaining
     do {
@@ -236,7 +236,12 @@ void Game::GameState() {
     } while(WinCheck() == false);
     
     //Calculate Winner's Score
+    std::cout << "Tallying Scores...\n";                        ///<-------------------------------------- FIXME; REMOVE
+    std::cout << "CurrNum: " << currNum << std::endl;           ///<-------------------------------------- FIXME; REMOVE
+    
     playerScores.at(currNum) += TallyHands();
+    
+    std::cout << "Finished Tallying Scores...\n" << std::endl;   ///<-------------------------------------- FIXME; REMOVE
 }
 
 ///Plays out the current player's turn (drawing, choosing a card from their hand, and checking the
@@ -436,6 +441,9 @@ unsigned int Game::TallyHands() {
             for(unsigned int k = 0; k < playerHand.Size(); k++) {
                 cardType = playerHand.At(k)->Info_GetType();
                 
+                std::cout << "Hand " << i << " | " << "Interval " << k ///<----------- FIXME; REMOVE
+                          << std::endl;                                ///<----------- FIXME; REMOVE
+                
                 switch(cardType) {
                     //Reverse, Skip, or Draw 2 == 20 Points
                     case REVERSE:
@@ -459,6 +467,8 @@ unsigned int Game::TallyHands() {
             }
         }
     }
+    
+    std::cout << "Finished Sum\n" << std::endl; ///<------------------------------------------------- FIXME; REMOVE
 
     return sum;
 }
@@ -480,8 +490,8 @@ void Game::PrintScores() {
                 playerNum = k;
             }
         }
-        std::cout << i + 1 << " (" << playerNames.at(playerNum) << ") | "
-                  << score << "Points\n";
+        std::cout << i + 1 << " (" << playerNames.at(i) << ") | "
+                  << score << " Points\n";
         
         if(i == 0) {
             winnerNum = playerNum;

@@ -24,6 +24,14 @@ void Cards::PrintCard() {
               << Print_CardBottom() << std::endl;
 }
 
+//Changes Any Card Into One with Wild's Properties
+void Cards::SetDebugCard() {
+    
+    Info_SetType(WILD);
+    Info_SetNumVal(-1);
+    Info_SetColor(NOT_SPECIFIED);
+}
+
 /*****************************************************/
 
 std::string Number::Print_CardMiddle() const {

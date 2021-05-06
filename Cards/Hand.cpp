@@ -48,3 +48,10 @@ void Hand::PrintHand() const {
     
     std::cout << hnd.str() << std::endl;
 }
+
+void Hand::SetDebugHand() {
+    Cards *card = new Wild;
+    
+    hand.resize(0);
+    hand.push_back(card);
+}

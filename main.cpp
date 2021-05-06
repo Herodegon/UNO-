@@ -17,13 +17,22 @@ int main() {
             
             std::cout << "Would you like to continue? Enter \'Y\' or \'N\'.\n";
             
-            if((playerInput != 'Y') && (playerInput != 'N')) {
+            std::cin >> playerInput;
+            
+            if(((playerInput != 'Y') && (playerInput != 'N')) || (std::cin.fail())) {
                 
                 std::cout << "Please enter \'Y\' or \'N\'.\n";
+                
+                if(std::cin.fail()) {
+                    std::cin.ignore();
+                    std::cin.clear();
+                }
+                
                 fail = true;
             }
         } while(fail == true);
     } while(playerInput == 'Y');
+    std::cout << std::endl;
         
     uno.PrintScores();
     

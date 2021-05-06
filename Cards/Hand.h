@@ -22,9 +22,14 @@ class Hand {
         Cards* Last() const {return hand.back();}
         
         //Hand Manipulators
+        void Resize(unsigned int i) {hand.resize(i);}
+        
         void Push_Back(Cards *card) {hand.push_back(card);}
         void Pop(unsigned int i) {hand.erase(hand.begin()+i);}
         void Pop_Back() {hand.pop_back();}
+        
+        //Test Functionality
+        void SetDebugHand();
         
     private:
         std::vector<Cards*> hand;

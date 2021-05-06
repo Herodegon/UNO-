@@ -2,7 +2,6 @@
 #define GAME_H
 
 #include <fstream>
-#include <sstream>
 
 #include "../Cards/Deck.h"
 #include "../Cards/Hand.h"
@@ -11,6 +10,9 @@ class Game {
     public:
         Game();
         ~Game();
+        
+        //Screen Clear Function
+        void Clear() const;
         
         //Runs Through 1 Round of UNO
         void GameState();
@@ -36,8 +38,8 @@ class Game {
         std::vector<std::string> playerNames;
         std::vector<unsigned int> playerScores;
         
-        int turn;
-        bool isReverse;
+        int turn = 0;
+        bool isReverse = false;
     
         Deck deckPile; //UNO Deck
         Deck discardPile; //Discard Pile
@@ -62,7 +64,7 @@ class Game {
         void Draw2Card();
         void WildCard();
         void Wild4Card();
-        void BlankCard();
+        void BlankCard(Cards *card);
         
         bool fail = false;
 };

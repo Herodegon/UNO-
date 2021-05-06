@@ -2,6 +2,7 @@
 #define CARDS_H
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 enum CardType {
@@ -11,8 +12,7 @@ enum CardType {
     DRAW2 = 12, 
     WILD = 13, 
     WILD4 = 14, 
-    BLANK = 15, 
-    NUM_TYPES
+    BLANK = 15
 };
 
 enum CardColor {BLUE, GREEN, RED, YELLOW, NUM_COLORS, NOT_SPECIFIED};
@@ -28,7 +28,7 @@ struct Info {
 
 class Cards {
     public:
-        virtual ~Cards() = 0;
+        virtual ~Cards() {};
         
         //Accessors for Card Info
         int Info_GetNumVal() const {return cardInfo.numValue;}
@@ -42,9 +42,9 @@ class Cards {
         //Print Card in ASCII Characters
         void PrintCard();
         
-        std::string Print_CardTop()    {return ".---. \n";}
+        std::string Print_CardTop()    {return ".---. ";}
         virtual std::string Print_CardMiddle() const = 0;
-        std::string Print_CardBottom() {return "'---' \n";}
+        std::string Print_CardBottom() {return "'---' ";}
     
     protected:
     
@@ -61,10 +61,10 @@ class Cards {
 class Number : public Cards {
     public:
         Number(unsigned int num, unsigned int color) {
-            cardInfo.numValue = num;
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetNumVal(num);
+            Info_SetColor(color);
         }
-        ~Number();
+        ~Number() {};
         
         std::string Print_CardMiddle() const;
         
@@ -76,9 +76,10 @@ class Number : public Cards {
 class Skip : public Cards {
     public:
         Skip(unsigned int color) {
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetType(SKIP);
+            Info_SetColor(color);
         }
-        ~Skip();
+        ~Skip() {};
         
         std::string Print_CardMiddle() const;
         
@@ -90,9 +91,10 @@ class Skip : public Cards {
 class Reverse : public Cards {
     public:
         Reverse(unsigned int color) {
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetType(REVERSE);
+            Info_SetColor(color);
         }
-        ~Reverse();
+        ~Reverse() {};
         
         std::string Print_CardMiddle() const;
         
@@ -104,9 +106,10 @@ class Reverse : public Cards {
 class Draw2 : public Cards {
     public:
         Draw2(unsigned int color) {
-            cardInfo.color = static_cast<CardColor>(color);
+            Info_SetType(DRAW2);
+            Info_SetColor(color);
         }
-        ~Draw2();
+        ~Draw2() {};
         
         std::string Print_CardMiddle() const;
         
@@ -117,7 +120,10 @@ class Draw2 : public Cards {
 
 class Wild : public Cards {
     public:
-        ~Wild();
+        Wild() {
+            Info_SetType(WILD); 
+        }
+        ~Wild() {};
     
         std::string Print_CardMiddle() const;
         
@@ -128,7 +134,10 @@ class Wild : public Cards {
 
 class Wild4 : public Cards {
     public:
-        ~Wild4();
+        Wild4() {
+            Info_SetType(WILD4);    
+        }
+        ~Wild4() {};
     
         std::string Print_CardMiddle() const;
         
@@ -139,7 +148,10 @@ class Wild4 : public Cards {
 
 class Blank : public Cards {
     public:
-        ~Blank();
+        Blank() {
+            Info_SetType(BLANK);
+        }
+        ~Blank() {};
     
         std::string Print_CardMiddle() const;
         

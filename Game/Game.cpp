@@ -6,20 +6,17 @@ Game::Game() {
     Intro();
 }
 
-/*!TODO: FIX DESTRUCTOR
 Game::~Game() {
     
-    //Delete Decks
-    delete deckPile;
-    delete discardPile;
+    std::cout << "Ending Game...\n";
+}
+
+void Game::Clear() const {
     
-    //Delete Hands
-    for(unsigned int i = size() - 1; i >= 0; i--) {
-        
-        delete playerHands.at(i);
+    for(unsigned int i = 0; i < 50; i++) {
+        std::cout << std::endl;
     }
 }
-*/
 
 void Game::Intro() {
     
@@ -28,30 +25,36 @@ void Game::Intro() {
               << std::endl;
 
     //Ask If They Would Like A Tutorial
+    char tutorialChoice;
     do {
-        std::cout << "Would you like to play the tutorial? Enter \'y\' or \'n\'.\n";
-        std::cin.get();
+        fail = false;
         
-        if((std::cin.get() != 'y') && (std::cin.get() != 'n'))
-        {
-            std::cout << "Please enter \'y\' or \'n\'.\n"
+        std::cout << "Would you like to play the tutorial? Enter \'Y\' or \'N\'.\n";
+        std::cin >> tutorialChoice;
+        
+        if((tutorialChoice != 'Y') && (tutorialChoice != 'N')) {
+            std::cout << "Please enter \'Y\' or \'N\'.\n"
                       << std::endl;
+            fail = true;
         }
-    } while((std::cin.get() != 'y') && (std::cin.get() != 'n'));
+    } while(isFail() == true);
 
-    //Run the tutorial if they respond with 'y'
-    if(std::cin.get() == 'y') {
+    //If 'Y'; Run Tutorial
+    if(tutorialChoice == 'Y') {
         Tutorial();
     }
     
-    std::cin.clear();
+    std::cout << std::endl;
 
-    //# of players
+    //Declare Number of Players
     do {
+        fail = false;
+        
         std::cout << "How many players are there? "
                   << "Enter a number between \'2\' and \'4\'.\n";
         
         std::cin >> numPlayers;
+        
         //Player Number Check (Must be number between 2 and 4)
         if(((numPlayers < 2) || (numPlayers > 4)) || (std::cin.fail())) { 
             std::cout << std::endl << "Please enter a number between \'2\' and \'4\'.\n";
@@ -60,12 +63,17 @@ void Game::Intro() {
                 std::cin.clear();
                 std::cin.ignore();
             }
+            
+            fail = true;
         }
-    } while((numPlayers < 2) || (numPlayers > 4));
+    } while(isFail() == true);
     std::cout << std::endl;
 
-    //Player names
+    //Resize Player Elements
     playerNames.resize(numPlayers);
+    playerHands.resize(numPlayers);
+    playerScores.resize(numPlayers);
+    
     for(size_t i = 0; i < numPlayers; i++) {
         do {
             std::cout << "Please enter Player " << i + 1 << "\'s name.\n";
@@ -75,8 +83,9 @@ void Game::Intro() {
             //Character Length Check (Name must be less than 15 chars)
             if(playerNames.at(i).size() > 15) {
                 std::cout << "Please use a shorter name (less than 15 characters).\n";
+                fail = true;
             }
-        } while(playerNames.at(i).size() > 15);
+        } while(isFail() == true);
     }
     std::cout << std::endl;
 
@@ -92,41 +101,58 @@ void Game::Intro() {
     
     //Set Player Scores
     playerScores.resize(0, numPlayers);
+    
+    Clear();
 }
 
 ///Runs the player through an interactive tutorial for playing UNO
 void Game::Tutorial() const {
-    
     std::string str; //Output string
     std::ostringstream inp;
     int endSec; //Flag to see if the line contains "Press 'Enter' to continue..."
 
     std::ifstream tutorial; //File variable for "tutorial.txt"
+    
+    //Clear Terminal for Cohesive Tutorial
+    Clear();
 
-    tutorial.open("tutorial.txt");
+    tutorial.open("Game/tutorial.txt");
     if(tutorial.is_open()) {
         while(getline(tutorial, str)) { //Output lines from "tutorial.txt" until it hits a line with "Press 'Enter' to continue..."
             endSec = str.find("Press \'Enter\' to continue...");
 
             inp << str << std::endl;
             if(endSec == 0) {
-                std::cout << inp.str() << std::endl;
-                inp.flush();
+                //Clear to Seperate Tutorial Sections
+                Clear();
                 
+                //Output Tutorial Section
+                std::cout << inp.str() << std::endl;
+                
+                //Get Empty Output; Clear StringStream
                 std::cin.get();
                 std::cin.ignore();
+                inp.str("");
             }
         }
     }
+    else {
+        std::cout << "ERROR: Tutorial Failed to Open.\n"
+                  << std::endl;
+    }
+    
     tutorial.close();
     std::cout << "END OF TUTORIAL\n";
 }
+
+/*****************************************************/
 
 ///Runs a single round of UNO, and tallies a score for the winner based on the other player's hands.
 void Game::GameState() {
     
     //(Re)Build Deck and Shuffle
     deckPile.Build();
+    
     deckPile.Shuffle();
     
     //Create Discard Pile
@@ -137,18 +163,16 @@ void Game::GameState() {
     //Check Top Discard for Special Cases
     switch(discardPile.Top()->Info_GetType()) {
         
-        //If the card is Blank, choose a random number and color
         case BLANK:
-            discardPile.At(0)->Info_SetNumVal(rand() % 10);
-            //Continue to Next Case
+            discardPile.Top()->Info_SetNumVal(rand() % 10);
+            ///Continue to next case
         
-        //If the card is Wild/Wild 'Draw 4', choose a random color
         case WILD:  
         case WILD4:
-            discardPile.At(0)->Info_SetColor(rand() % NUM_COLORS);
+            discardPile.Top()->Info_SetColor(rand() % NUM_COLORS);
             break;
             
-        //Else, nothing occurs
+        //If Not Wild, Wild4, Blank; Do Nothing
         default:
             break;
     }
@@ -173,8 +197,7 @@ void Game::GameState() {
         currName = playerNames.at(currNum);
         
         //Announce Who's Turn It Is
-        std::cout << "=== " << currName << "'s Turn ===\n"
-                  << std::endl;
+        std::cout << "=== " << currName << "'s Turn ===\n";
         
         //Execute Curr Player's Turn
         Turn();
@@ -195,15 +218,21 @@ void Game::GameState() {
 
         // End of Turn Summary
         std::cout << "=== End of Turn ===\n" << std::endl;
+        
+        std::cout << "End Hand\n";
+        currPlayer->PrintHand();
             
         std::cout << "Top Card on Discard Pile\n";
         discardPile.Top()->PrintCard();
+        std::cout << std::endl;
             
         std::cout << "Next up is " << playerNames.at(turn % numPlayers) << std::endl
                   << std::endl
                   << "Press \'Enter\' to continue...\n";
         std::cin.get();
         std::cin.ignore();
+        
+        Clear();
     } while(WinCheck() == false);
     
     //Calculate Winner's Score
@@ -213,20 +242,21 @@ void Game::GameState() {
 ///Plays out the current player's turn (drawing, choosing a card from their hand, and checking the
 ///remaining cards in their hand).
 void Game::Turn() {
-    
-    // Displays player hand at the start of turn
-    playerHands.at(currNum).PrintHand();
-
-    std::cout << "=== Top Card ===\n";
-    discardPile.Top()->PrintCard();
-
     std::string playerChoice;
     bool exitState;
+    
     do {
-        exitState = true;
+        //Set to True When Player Can Leave
+        exitState = false;
         
         do {
             fail = false;
+            
+            //Display Player Hand
+            playerHands.at(currNum).PrintHand();
+
+            std::cout << "=== Top Card ===\n";
+            discardPile.Top()->PrintCard();
             
             std::cout << "Would you like to \'play\' a card, or \'draw\'?\n";
             
@@ -264,7 +294,7 @@ void Game::Turn() {
                 } while(isFail() == true);
 
                 //If No; Return To "Draw or Play"
-                if(clarify == 'n') {
+                if(clarify == 'N') {
                     break;
                 }
 
@@ -280,16 +310,21 @@ void Game::Turn() {
                     std::cout << "Your new card can be played.\n"
                               << std::endl;
                     Play(*currPlayer, currPlayer->Back());
-                    exitState = false;
+                    exitState = true;
                 }
                 else {
-                    std::cout << "Card can't be played.\n";
+                    std::cout << "Card can't be played.\n"
+                              << "Press \'Enter\' to continue...\n";
+                    
+                    std::cin.get();
+                    std::cin.ignore();
+                    Clear();
                 }
                 break;
 
             ///Play a Card
             case 1:
-                unsigned int cardChoice = -1; //Card from 1 to their hand size that player has chosen to play
+                unsigned int cardChoice; //Card from 1 to their hand size that player has chosen to play
 
                 do {
                     do {
@@ -316,26 +351,42 @@ void Game::Turn() {
                             }
                             
                             fail = true;
+                            break;
                         }
                         
                         //If card choice is '0', return to "Draw or Play"
                         if(cardChoice == 0) {
                             break;
                         }
-                    } while(canPlay(currPlayer->At(cardChoice)));
+                        
+                        //If card cannot be played, choose another card
+                        if(canPlay(currPlayer->At(cardChoice-1)) == false) {
+                            std::cout << "Please choose a card of matching "
+                                      << "type, number, or color.\n"
+                                      << std::endl;
+                        }
+                        //Else, player can play card
+                        else {
+                            exitState = true;
+                        }
+                    } while(canPlay(currPlayer->At(cardChoice-1)) == false);
                     
-                    //Continue to Exit
-                    if(exitState == true) {
-                        break;
+                    //Check if Input has Failed
+                    if(isFail() == false) {
+                        
+                        //Continue to Exit
+                        if(exitState == false) {
+                            break;
+                        }
+                        //If Not Exit; Play Card and End Turn
+                        else {
+                            Play(*currPlayer, cardChoice-1);
+                        }
                     }
-                    
-                    //If Not Exit; Play Card and End Turn
-                    Play(*currPlayer, cardChoice);
-                    exitState = false;
-                } while((canPlay(currPlayer->At(cardChoice)) == true) && (isFail() == false));
+                } while(isFail() == true);
                 break;
         }
-    } while(exitState == true);
+    } while(exitState == false); //While 'False'; Cannot Exit Turn
 }
 
 ///Checks players hand at the end of each turn to see if they either have 1 card left (calls out UNO),
@@ -359,6 +410,8 @@ bool Game::WinCheck() const {
         return false;
     }
 }
+
+/*****************************************************/
 
 ///Converts the player's hand into points, and returns the total.
 unsigned int Game::TallyHands() {
@@ -464,7 +517,10 @@ void Game::Draw(Hand &player, unsigned int numCards) {
 void Game::Play(Hand &player, unsigned int cardInHand) {
     Cards *card = player.At(cardInHand);
     
-    discardPile.Push_Back(card);
+    //Blank Does Not Push Card
+    if(card->Info_GetType() != BLANK) {
+        discardPile.Push_Back(card);
+    }
     
     switch(card->Info_GetType()) {
         case SKIP:
@@ -483,7 +539,8 @@ void Game::Play(Hand &player, unsigned int cardInHand) {
             Wild4Card();
             break;
         case BLANK:
-            BlankCard();
+            BlankCard(card);
+            discardPile.Push_Back(card);
             break;
         default:
             break;
@@ -517,48 +574,47 @@ void Game::ReverseCard() {
 ///Card Function: Makes the next player draw 2 cards.
 void Game::Draw2Card() {
     unsigned int playerDraw; //Number of Player That Draws 2 Cards
-        
-    for(unsigned int i = 0; i < 2; i++) { //Draw 2 Cards
-        
-        if(deckPile.Size() == 0) {
-            std::cout << "Reshuffling Deck...";
-            deckPile = discardPile;
-            deckPile.Shuffle();
-        }
-        
-        switch(isReverse) {
-            //Player rotation is normal
-            case false:
-                playerDraw = (currNum + 1) % numPlayers;
-                break;
-
-            // Player rotation is reversed
-            case true:
-                playerDraw = (currNum - 1) % numPlayers;
-        }
-            
-        Draw(playerHands.at(playerDraw), 2);
+    
+    if(deckPile.Size() == 0) {
+        std::cout << "Reshuffling Deck...";
+        deckPile = discardPile;
+        deckPile.Shuffle();
     }
+        
+    switch(isReverse) {
+        //Player rotation is normal
+        case false:
+            playerDraw = (currNum + 1) % numPlayers;
+            break;
+
+        // Player rotation is reversed
+        case true:
+            playerDraw = (currNum - 1) % numPlayers;
+            break;
+    }
+            
+    Draw(playerHands.at(playerDraw), 2);
 }
 
 ///Card Function: Let's the player choose the color of the top card on the discard pile.
 void Game::WildCard() {
-    
     char playerColorChoice;
+    unsigned int color;
     
     do {
         fail = false;
         
         //Player Input for Color
         std::cout << "What color would you like the discard pile to be? Enter \'B\', \'G\', \'R\', or \'Y\'.\n";
+        
         std::cin >> playerColorChoice;
         std::cout << std::endl;
         
         //Assign Color to Top of Discard Pile
-        unsigned int color;
         switch(playerColorChoice) {
             case 'B':
                 color = BLUE;
+                break;
             case 'G':
                 color = GREEN;
                 break;
@@ -576,8 +632,9 @@ void Game::WildCard() {
                 
         }
         
-        discardPile.Top()->Info_SetColor(color);
     } while(isFail() == true);
+    
+    discardPile.Top()->Info_SetColor(color);
 }
 
 ///Card Function: If the player has no other card in their hand they can play:
@@ -600,71 +657,95 @@ void Game::Wild4Card() {
 }
 
 ///Card Function: Allows the player to choose the number value and color of the top card on the discard pile.
-void Game::BlankCard() {
-    unsigned int blankValue;
-    unsigned int blankColor;
-
+void Game::BlankCard(Cards *card) {
+    Cards *topCard = discardPile.Top();
+    int blankValue;
+    CardColor blankColor;
+    
+    bool sameNum = false;
+    
     do {
         fail = false;
-                    
+        
         std::cout << "Choose your card value. Enter a number between \'0\' and \'9\'.\n";
                               
         std::cin >> blankValue;
         std::cout << std::endl;
-                    
+        
         if((blankValue < 0) || (blankValue > 9)) {
             std::cout << "Please enter a valid number.\n";
             fail = true;
         }
+        else if(blankValue == topCard->Info_GetNumVal()) {
+            sameNum = true;
+        }
     } while(isFail() == true);
     
-    
-    char playerColor;
-    do {
-        fail = false;
-                    
-        std::cout << "Choose your card color. Enter \'B\', \'G\', "
-                  << "\'R\', or \'Y\'.\n";
-                         
-        std::cin >> playerColor;
-        std::cout << std::endl;
-                    
-        if((playerColor != 'B') && (playerColor != 'G') &&
-           (playerColor != 'R') && (playerColor != 'Y')) {
-            std::cout << "Please enter a valid color.\n";
-            fail = true;
-        }
-        else {
-            switch(playerColor) {
-                case 'B':
-                    blankColor = BLUE;
-                case 'G':
-                    blankColor = GREEN;
-                case 'R':
-                    blankColor = RED;
-                case 'Y':
-                    blankColor = YELLOW;
+    //If CardNum is Same as Discard; Player Chooses Card Color
+    if(sameNum == true) {
+        char playerColor;
+        
+        do {
+            fail = false;
+                        
+            std::cout << "Choose your card's color. Enter \'B\', \'G\', "
+                      << "\'R\', or \'Y\'.\n";
+                             
+            std::cin >> playerColor;
+            std::cout << std::endl;
+                        
+            if((playerColor != 'B') && (playerColor != 'G') &&
+               (playerColor != 'R') && (playerColor != 'Y')) {
+                std::cout << "Please enter a valid color.\n";
+                fail = true;
             }
-        }
-    } while(isFail() == true);
+            else {
+                switch(playerColor) {
+                    case 'B':
+                        blankColor = BLUE;
+                        break;
+                    case 'G':
+                        blankColor = GREEN;
+                        break;
+                    case 'R':
+                        blankColor = RED;
+                        break;
+                    case 'Y':
+                        blankColor = YELLOW;
+                        break;
+                }
+            }
+        } while(isFail() == true);
+    }
+    else {
+        blankColor = topCard->Info_GetColor();
+    }
     
-    discardPile.Top()->Info_SetNumVal(blankValue);
-    discardPile.Top()->Info_SetColor(blankColor);
+    card->Info_SetNumVal(blankValue);
+    card->Info_SetColor(blankColor);
 }
 
 bool Game::canPlay(Cards* card) const {
     Cards *topCard = discardPile.Top();
-    bool hasNumber = ((card->Info_GetType() == NUMBER) ||
-                      (card->Info_GetType() == BLANK));
+    bool isNumber = (card->Info_GetType() == NUMBER);
     
-    if((hasNumber) && (card->Info_GetNumVal() == card->Info_GetNumVal())) {
+    if((isNumber == true) && (card->Info_GetNumVal() == topCard->Info_GetNumVal())) {
         return true;
     }
-    if(card->Info_GetType() == topCard->Info_GetType()) {
+    else if((isNumber == false) && (card->Info_GetType() == topCard->Info_GetType())) {
         return true;
     }
-    if(card->Info_GetColor() == card->Info_GetColor()) {
+    else if(card->Info_GetColor() == topCard->Info_GetColor()) {
         return true;
+    }
+    
+    switch(card->Info_GetType()) {
+        case WILD:
+        case WILD4:
+        case BLANK:
+            return true;
+        default:
+            break;
     }
     
     return false;

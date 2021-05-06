@@ -7,7 +7,6 @@
 
 class Deck {
     public:
-        Deck();
         ~Deck();
         
         //Operators

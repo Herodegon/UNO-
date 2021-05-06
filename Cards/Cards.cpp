@@ -2,7 +2,7 @@
 
 char Cards::GetColor() const {
     
-    switch(cardInfo.color) {
+    switch(Info_GetColor()) {
         case BLUE:
             return 'B';
         case GREEN:
@@ -29,7 +29,7 @@ void Cards::PrintCard() {
 std::string Number::Print_CardMiddle() const {
     std::ostringstream str;
     
-    str << "|" << cardInfo.numValue << " " << GetColor() << "| ";
+    str << "|" << Info_GetNumVal() << " " << GetColor() << "| ";
     
     return str.str();
 }

@@ -72,6 +72,7 @@ void Game::Intro() {
     //Resize Player Elements
     playerNames.resize(numPlayers);
     playerHands.resize(numPlayers);
+    playerScores.resize(numPlayers);
     
     for(size_t i = 0; i < numPlayers; i++) {
         do {
@@ -363,8 +364,6 @@ void Game::Turn() {
                             std::cout << "Please choose a card of matching "
                                       << "type, number, or color.\n"
                                       << std::endl;
-                            std::cout << "Type: " << currPlayer->At(cardChoice-1)->Info_GetType() ///<-------- FIXME; REMOVE
-                                      << std::endl;                                               ///<-------- FIXME; REMOVE
                         }
                         //Else, player can play card
                         else {
@@ -518,7 +517,10 @@ void Game::Draw(Hand &player, unsigned int numCards) {
 void Game::Play(Hand &player, unsigned int cardInHand) {
     Cards *card = player.At(cardInHand);
     
-    discardPile.Push_Back(card);
+    //Blank Does Not Push Card
+    if(card->Info_GetType() != BLANK) {
+        discardPile.Push_Back(card);
+    }
     
     switch(card->Info_GetType()) {
         case SKIP:
@@ -537,7 +539,8 @@ void Game::Play(Hand &player, unsigned int cardInHand) {
             Wild4Card();
             break;
         case BLANK:
-            BlankCard();
+            BlankCard(card);
+            discardPile.Push_Back(card);
             break;
         default:
             break;
@@ -596,20 +599,22 @@ void Game::Draw2Card() {
 ///Card Function: Let's the player choose the color of the top card on the discard pile.
 void Game::WildCard() {
     char playerColorChoice;
+    unsigned int color;
     
     do {
         fail = false;
         
         //Player Input for Color
         std::cout << "What color would you like the discard pile to be? Enter \'B\', \'G\', \'R\', or \'Y\'.\n";
+        
         std::cin >> playerColorChoice;
         std::cout << std::endl;
         
         //Assign Color to Top of Discard Pile
-        unsigned int color;
         switch(playerColorChoice) {
             case 'B':
                 color = BLUE;
+                break;
             case 'G':
                 color = GREEN;
                 break;
@@ -627,8 +632,9 @@ void Game::WildCard() {
                 
         }
         
-        discardPile.Top()->Info_SetColor(color);
     } while(isFail() == true);
+    
+    discardPile.Top()->Info_SetColor(color);
 }
 
 ///Card Function: If the player has no other card in their hand they can play:
@@ -651,7 +657,7 @@ void Game::Wild4Card() {
 }
 
 ///Card Function: Allows the player to choose the number value and color of the top card on the discard pile.
-void Game::BlankCard() {
+void Game::BlankCard(Cards *card) {
     Cards *topCard = discardPile.Top();
     int blankValue;
     CardColor blankColor;
@@ -660,7 +666,7 @@ void Game::BlankCard() {
     
     do {
         fail = false;
-                    
+        
         std::cout << "Choose your card value. Enter a number between \'0\' and \'9\'.\n";
                               
         std::cin >> blankValue;
@@ -675,13 +681,10 @@ void Game::BlankCard() {
         }
     } while(isFail() == true);
     
-    char playerColor;
-    
-    //If Card Num is Not Same; Make Card Color Equal to Discard Color
-    if(sameNum != true) {
-        blankColor = topCard->Info_GetColor();
-    }
-    else {
+    //If CardNum is Same as Discard; Player Chooses Card Color
+    if(sameNum == true) {
+        char playerColor;
+        
         do {
             fail = false;
                         
@@ -700,19 +703,26 @@ void Game::BlankCard() {
                 switch(playerColor) {
                     case 'B':
                         blankColor = BLUE;
+                        break;
                     case 'G':
                         blankColor = GREEN;
+                        break;
                     case 'R':
                         blankColor = RED;
+                        break;
                     case 'Y':
                         blankColor = YELLOW;
+                        break;
                 }
             }
         } while(isFail() == true);
     }
+    else {
+        blankColor = topCard->Info_GetColor();
+    }
     
-    topCard->Info_SetNumVal(blankValue);
-    topCard->Info_SetColor(blankColor);
+    card->Info_SetNumVal(blankValue);
+    card->Info_SetColor(blankColor);
 }
 
 bool Game::canPlay(Cards* card) const {

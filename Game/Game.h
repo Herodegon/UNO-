@@ -64,7 +64,7 @@ class Game {
         void Draw2Card();
         void WildCard();
         void Wild4Card();
-        void BlankCard();
+        void BlankCard(Cards *card);
         
         bool fail = false;
 };

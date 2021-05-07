@@ -2,7 +2,7 @@
 
 Deck::~Deck() {
     
-    for(size_t i = deck.size() - 1; i >= 0; i--) {
+    for(size_t i = 0; i < deck.size(); i++) {
         
         delete deck.at(i);
     }

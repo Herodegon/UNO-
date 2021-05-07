@@ -9,7 +9,7 @@
 class Game {
     public:
         Game();
-        ~Game();
+        ~Game() {};
         
         //Screen Clear Function
         void Clear() const;

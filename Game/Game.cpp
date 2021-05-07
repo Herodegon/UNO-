@@ -6,11 +6,6 @@ Game::Game() {
     Intro();
 }
 
-Game::~Game() {
-    
-    std::cout << "Ending Game...\n";
-}
-
 void Game::Clear() const {
     
     for(unsigned int i = 0; i < 50; i++) {
@@ -186,7 +181,7 @@ void Game::GameState() {
             Draw(playerHands.at(0), 7);
     }
     
-    playerHands.at(0).SetDebugHand(); ///<---------------------------------------------- FIXME; REMOVE
+    //!playerHands.at(0).SetDebugHand(); ///<---------------------------------------------- FIXME; REMOVE
 
     //Play Turns Until One Player Has No Cards Remaining
     do {
@@ -236,12 +231,7 @@ void Game::GameState() {
     } while(WinCheck() == false);
     
     //Calculate Winner's Score
-    std::cout << "Tallying Scores...\n";                        ///<-------------------------------------- FIXME; REMOVE
-    std::cout << "CurrNum: " << currNum << std::endl;           ///<-------------------------------------- FIXME; REMOVE
-    
     playerScores.at(currNum) += TallyHands();
-    
-    std::cout << "Finished Tallying Scores...\n" << std::endl;   ///<-------------------------------------- FIXME; REMOVE
 }
 
 ///Plays out the current player's turn (drawing, choosing a card from their hand, and checking the
@@ -432,17 +422,14 @@ unsigned int Game::TallyHands() {
       ================================================================*/
     unsigned int sum = 0;
     
-    Hand playerHand;
+    Hand *playerHand;
     CardType cardType;
     for(unsigned int i = 0; i < numPlayers; i++) {
-        playerHand = playerHands.at(i);
+        playerHand = &playerHands.at(i);
         
-        if(playerHand.Size() != 0) {
-            for(unsigned int k = 0; k < playerHand.Size(); k++) {
-                cardType = playerHand.At(k)->Info_GetType();
-                
-                std::cout << "Hand " << i << " | " << "Interval " << k ///<----------- FIXME; REMOVE
-                          << std::endl;                                ///<----------- FIXME; REMOVE
+        if(playerHand->Size() != 0) {
+            for(unsigned int k = 0; k < playerHand->Size(); k++) {
+                cardType = playerHand->At(k)->Info_GetType();
                 
                 switch(cardType) {
                     //Reverse, Skip, or Draw 2 == 20 Points
@@ -461,14 +448,12 @@ unsigned int Game::TallyHands() {
                         break;
                     //Number == Card Value in Points
                     default:
-                        sum += playerHand.At(k)->Info_GetNumVal();
+                        sum += playerHand->At(k)->Info_GetNumVal();
                         break;
                 }
             }
         }
     }
-    
-    std::cout << "Finished Sum\n" << std::endl; ///<------------------------------------------------- FIXME; REMOVE
 
     return sum;
 }

@@ -2,7 +2,7 @@
 
 Hand::~Hand() {
     
-    for(size_t i = hand.size() - 1; i >= 0; i--) {
+    for(size_t i = 0; i < hand.size(); i++) {
         
         delete hand.at(i);
     }
